@@ -1,52 +1,58 @@
 import { gql } from "@apollo/client";
 
 export const getHomeData = gql`
-  query getNameId {
-    articleCollection(limit: 100) {
+  query {
+    postCollection(order: date_DESC) {
       items {
         sys {
           id
         }
+        slug
         title
+        coverImage {
+          url
+        }
+        date
         author {
-          sys {
-            id
+          name
+          picture {
+            url
           }
         }
+        excerpt
+      }
+    }
+  }
+`;
+
+export const getPostSlug = gql`
+  query {
+    postCollection(order: date_DESC) {
+      items {
+        slug
+      }
+    }
+  }
+`;
+
+export const getPostData = gql`
+  query($slug: String!) {
+    postCollection(where: { slug: $slug }, limit: 1) {
+      items {
+        title
         coverImage {
-          title
           url
-          width
-          height
         }
-      }
-    }
-  }
-`;
-
-export const getAuthorData = gql`
-  query getAuthor($id: String!) {
-    author(id: $id) {
-      name
-    }
-  }
-`;
-
-export const getArticleSlug = gql`
-  query getName {
-    articleCollection(limit: 100) {
-      items {
-        slug
-      }
-    }
-  }
-`;
-
-export const getArticleData = gql`
-  query getName {
-    articleCollection(limit: 100) {
-      items {
-        slug
+        date
+        author {
+          name
+          picture {
+            url
+          }
+        }
+        content {
+          json
+        }
       }
     }
   }
