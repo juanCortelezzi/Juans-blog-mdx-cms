@@ -51,5 +51,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post: data?.postCollection?.items[0] ?? null,
     },
+    revalidate: 10,
   };
 };
