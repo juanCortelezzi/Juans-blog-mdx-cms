@@ -1,38 +1,43 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { initializeApollo } from "../lib/apolloClient";
-import { getHomeData } from "../lib/apolloQuerys";
+import { getHomeData, IGetHomeData, IPost } from "../lib/apolloQuerys";
+import { Heading, Center, SimpleGrid, Stack } from "@chakra-ui/react";
+import { PostCard } from "../components/postCard";
+import { ApolloError } from "@apollo/client";
 
 export default function Home({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <div>
+    <Stack as="main">
       <Head>
-        <title>Create Next App</title>
+        <title>Next Blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        {posts.map((p: any) => {
-          return (
-            <div key={p.sys.id}>
-              <h2>{p.title}</h2>
-              <p>
-                {p.author.name}, {p.date}
-              </p>
-              <p>{p.title}</p>
-            </div>
-          );
-        })}
-      </main>
-    </div>
+      <Center>
+        <Heading as="h1" size="4xl" my={4}>
+          Next Blog
+        </Heading>
+      </Center>
+      <Center>
+        <SimpleGrid columns={3} spacing={6}>
+          {posts.map((p: IPost) => (
+            <PostCard key={p.sys.id} p={p} />
+          ))}
+        </SimpleGrid>
+      </Center>
+    </Stack>
   );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
-  const { data: post } = await client.query({
+  const { data: post, error }: { data: IGetHomeData; error?: ApolloError } = await client.query({
     query: getHomeData,
   });
 
+  if (error) {
+    console.log(error);
+  }
   return {
     props: {
       posts: post.postCollection.items,

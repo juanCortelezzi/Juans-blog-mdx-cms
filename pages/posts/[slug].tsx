@@ -1,45 +1,44 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetStaticProps } from "next";
 import { initializeApollo } from "../../lib/apolloClient";
-import { getPostData, getPostSlug } from "../../lib/apolloQuerys";
+import { getPostData, getPostSlug, IGetPostData, IGetPostSlug } from "../../lib/apolloQuerys";
+import { useRouter } from "next/router";
+import ErrorPage from "next/error";
 
-export default function Post({ post }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Post({ post }: { post: IGetPostData | null }) {
   console.log(post);
-  return <h1>Post</h1>;
+  const router = useRouter();
+  if (!router.isFallback && !post) {
+    return <ErrorPage statusCode={404} />;
+  }
+  return <div>{router.isFallback ? <h1>Loading ...</h1> : <h1>Post</h1>}</div>;
 }
 
 export async function getStaticPaths() {
   const client = initializeApollo();
 
-  let { data, error } = await client.query({
+  let { data }: { data: IGetPostSlug } = await client.query({
     query: getPostSlug,
   });
 
-  if (error) {
-    data = [];
-  }
-
   return {
-    paths: data.postCollection.items.map(({ slug }: { slug: string }) => ({
-      params: { slug },
-    })),
+    paths:
+      data?.postCollection.items.map(({ slug }: { slug: string }) => ({
+        params: { slug },
+      })) ?? [],
     fallback: true,
   };
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const client = initializeApollo();
-  let { data, error } = await client.query({
+  let { data }: { data: IGetPostData } = await client.query({
     query: getPostData,
     variables: { slug: params.slug },
   });
 
-  if (error) {
-    data = [];
-  }
-
   return {
     props: {
-      post: data.postCollection.items,
+      post: data?.postCollection?.items[0] ?? null,
     },
   };
 };
