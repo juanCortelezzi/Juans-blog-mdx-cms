@@ -1,16 +1,27 @@
 import { GetStaticProps } from "next";
 import { initializeApollo } from "../../lib/apolloClient";
-import { getPostData, getPostSlug, IGetPostData, IGetPostSlug } from "../../lib/apolloQuerys";
+import {
+  getPostData,
+  getPostSlug,
+  IGetPostData,
+  IGetPostSlug,
+  IPost,
+} from "../../lib/apolloQuerys";
 import { useRouter } from "next/router";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { Stack } from "@chakra-ui/react";
 import ErrorPage from "next/error";
 
-export default function Post({ post }: { post: IGetPostData | null }) {
-  console.log(post);
+export default function Post({ post }: { post: IPost | null }) {
   const router = useRouter();
   if (!router.isFallback && !post) {
     return <ErrorPage statusCode={404} />;
   }
-  return <div>{router.isFallback ? <h1>Loading ...</h1> : <h1>Post</h1>}</div>;
+  return (
+    <Stack as="main">
+      {router.isFallback ? <h1>Loading ...</h1> : documentToReactComponents(post.content.json)}
+    </Stack>
+  );
 }
 
 export async function getStaticPaths() {

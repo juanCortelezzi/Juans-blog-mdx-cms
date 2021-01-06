@@ -1,7 +1,7 @@
 import { IPost } from "../lib/apolloQuerys";
-import { Box, Avatar, Text, HStack } from "@chakra-ui/react";
+import { Box, Avatar, Text, HStack, Link } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
+import NextLink from "next/link";
 
 export const PostCard = ({ p }: { p: IPost }) => {
   const originalDate = new Date(p.date);
@@ -9,16 +9,16 @@ export const PostCard = ({ p }: { p: IPost }) => {
 
   return (
     <Box w="xl" maxW="xl" borderWidth="1px" borderRadius="lg" overflow="hidden">
-      <Link href={`posts/${p.slug}`}>
-        <a>
+      <NextLink href={`/posts/${p.slug}`} passHref>
+        <Link>
           <Image src={`${p.coverImage.url}`} width={2000} height={1000} layout="responsive" />
-        </a>
-      </Link>
+        </Link>
+      </NextLink>
       <Box p={4}>
         <Box fontWeight="bold" as="h2" lineHeight="tight" fontSize="3xl" isTruncated>
-          <Link href={`posts/${p.slug}`}>
-            <a>{p.title}</a>
-          </Link>
+          <NextLink href={`/posts/${p.slug}`} passHref>
+            <Link>{p.title}</Link>
+          </NextLink>
         </Box>
         <Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="sm" mt="2">
           <HStack spacing={4}>

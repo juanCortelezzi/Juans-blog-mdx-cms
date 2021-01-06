@@ -13,7 +13,7 @@ export interface IPost {
   coverImage: { url: string };
   date: Date;
   author: IAuthor;
-  excerpt: string;
+  content: { json: any };
 }
 
 export interface IAuthor {
