@@ -13,7 +13,20 @@ export interface IPost {
   coverImage: { url: string };
   date: Date;
   author: IAuthor;
-  content: { json: any };
+  content: {
+    json: any;
+    links: {
+      entries: {
+        block: any;
+        inline: any;
+        hyperlink: any;
+      };
+      assets: {
+        block: IAsset[];
+        hyperlink: IAsset[];
+      };
+    };
+  };
 }
 
 export interface IAuthor {
@@ -72,11 +85,25 @@ export interface IGetPostData {
       coverImage: { url: string };
       data: Date;
       author: IAuthor;
-      constent: {
-        json: JSON;
+      content: {
+        json: any;
+        links: {
+          assets: {
+            block: IAsset[];
+            hyperlink: IAsset[];
+          };
+        };
       };
     };
   };
+}
+
+interface IAsset {
+  sys: {
+    id: string;
+  };
+  title: string;
+  url: string;
 }
 
 export const getPostData = gql`
@@ -98,6 +125,88 @@ export const getPostData = gql`
         }
         content {
           json
+          links {
+            entries {
+              block {
+                ... on Post {
+                  sys {
+                    id
+                  }
+                  slug
+                  title
+                  coverImage {
+                    url(
+                      transform: {
+                        width: 2000
+                        height: 1000
+                        resizeStrategy: FILL
+                        format: JPG_PROGRESSIVE
+                      }
+                    )
+                  }
+                  date
+                  author {
+                    name
+                    picture {
+                      url
+                    }
+                  }
+                }
+                ... on Author {
+                  name
+                }
+              }
+              inline {
+                ... on Post {
+                  title
+                  author {
+                    name
+                  }
+                  sys {
+                    id
+                  }
+                  slug
+                }
+                ... on Author {
+                  name
+                }
+              }
+              hyperlink {
+                ... on Post {
+                  title
+                  author {
+                    name
+                  }
+                  coverImage {
+                    url
+                  }
+                  sys {
+                    id
+                  }
+                  slug
+                }
+                ... on Author {
+                  name
+                }
+              }
+            }
+            assets {
+              block {
+                url
+                title
+                sys {
+                  id
+                }
+              }
+              hyperlink {
+                url
+                title
+                sys {
+                  id
+                }
+              }
+            }
+          }
         }
       }
     }

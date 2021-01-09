@@ -19,7 +19,7 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
         </Heading>
       </Center>
       <Center>
-        <SimpleGrid columns={3} spacing={6}>
+        <SimpleGrid columns={[1, 1, 1, 1, 2]} spacing={6} px={4}>
           {posts.map((p: IPost) => (
             <PostCard key={p.sys.id} p={p} />
           ))}

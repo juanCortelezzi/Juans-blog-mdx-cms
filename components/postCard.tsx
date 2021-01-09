@@ -8,7 +8,7 @@ export const PostCard = ({ p }: { p: IPost }) => {
   const [month, date, year] = originalDate.toLocaleDateString("en-US").split("/");
 
   return (
-    <Box w="xl" maxW="xl" borderWidth="1px" borderRadius="lg" overflow="hidden">
+    <Box w={["xs", "md", "xl"]} maxW="xl" borderWidth="1px" borderRadius="lg" overflow="hidden">
       <NextLink href={`/posts/${p.slug}`} passHref>
         <Link>
           <Image src={`${p.coverImage.url}`} width={2000} height={1000} layout="responsive" />
