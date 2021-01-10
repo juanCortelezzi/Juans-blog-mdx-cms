@@ -1,11 +1,13 @@
-import { GetStaticProps } from "next";
 import { initializeApollo } from "../../lib/apolloClient";
-import { useRouter } from "next/router";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, MARKS, INLINES } from "@contentful/rich-text-types";
 import ErrorPage from "next/error";
 import Image from "next/image";
+import Head from "next/head";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { GetStaticProps } from "next";
+import { PostCard } from "../../components/postCard";
 import {
   getPostData,
   getPostSlug,
@@ -16,6 +18,8 @@ import {
 import {
   Heading,
   Text,
+  Avatar,
+  HStack,
   Code,
   ListItem,
   UnorderedList,
@@ -27,7 +31,7 @@ import {
   Spacer,
   Box,
 } from "@chakra-ui/react";
-import { PostCard } from "../../components/postCard";
+import ThemeSwitch from "../../components/themeSwitch";
 
 export default function Post({ post }: { post: IPost | null }) {
   const router = useRouter();
@@ -38,32 +42,32 @@ export default function Post({ post }: { post: IPost | null }) {
     renderNode: {
       [BLOCKS.PARAGRAPH]: (_node: any, children: any) => <Text fontSize="xl">{children}</Text>,
       [BLOCKS.HEADING_1]: (node: any) => (
-        <Heading as="h2" size="3xl">
+        <Heading as="h2" size="3xl" lineHeight="tall">
           {node.content[0].value}
         </Heading>
       ),
       [BLOCKS.HEADING_2]: (node: any) => (
-        <Heading as="h3" size="2xl">
+        <Heading as="h3" size="2xl" lineHeight="tall">
           {node.content[0].value}
         </Heading>
       ),
       [BLOCKS.HEADING_3]: (node: any) => (
-        <Heading as="h4" size="xl">
+        <Heading as="h4" size="xl" lineHeight="tall">
           {node.content[0].value}
         </Heading>
       ),
       [BLOCKS.HEADING_4]: (node: any) => (
-        <Heading as="h5" size="xl">
+        <Heading as="h5" size="xl" lineHeight="tall">
           {node.content[0].value}
         </Heading>
       ),
       [BLOCKS.HEADING_5]: (node: any) => (
-        <Heading as="h6" size="xl">
+        <Heading as="h6" size="xl" lineHeight="tall">
           {node.content[0].value}
         </Heading>
       ),
       [BLOCKS.HEADING_6]: (node: any) => (
-        <Text fontSize="3xl" fontWeight="semibold">
+        <Text fontSize="3xl" fontWeight="semibold" lineHeight="tall">
           {node.content[0].value}
         </Text>
       ),
@@ -115,7 +119,7 @@ export default function Post({ post }: { post: IPost | null }) {
         );
         return (
           <Center my={4}>
-            <Box w={["xs", "md", "xl"]} maxW="xl" borderRadius="lg" overflow="hidden">
+            <Box w={["xs", "md", "xl", "2xl"]} maxW="2xl" borderRadius="lg" overflow="hidden">
               <Image
                 src={image.url}
                 width={2000}
@@ -180,21 +184,61 @@ export default function Post({ post }: { post: IPost | null }) {
     },
   };
 
+  const originalDate = new Date(post.date);
+  const [month, date, year] = originalDate.toLocaleDateString("en-US").split("/");
+
   return (
     <Flex
       as="main"
       justify="center"
       align="center"
-      maxW="4xl"
+      maxW="6xl"
       w="full"
       direction="column"
       mx="auto"
       p={4}
     >
       {router.isFallback ? (
-        <h1>Loading ...</h1>
+        <>
+          <Head>
+            <title>Next Blog</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <Center w="full" lineHeight="tall">
+            <Heading as="h1">Loading ...</Heading>
+          </Center>
+        </>
       ) : (
-        <Box w="full">{documentToReactComponents(post.content.json, config)}</Box>
+        <>
+          <Head>
+            <title>{post.title}</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <Box w="full" lineHeight="tall">
+            <Flex justify="center" align="center" mb={4}>
+              <NextLink href="/" passHref>
+                <Link fontSize="2xl" fontWeight="semibold">
+                  Blog
+                </Link>
+              </NextLink>
+              <Spacer />
+              <ThemeSwitch />
+            </Flex>
+            <Heading as="h1" size="4xl" lineHeight="tall">
+              {post.title}
+            </Heading>
+            <Box mb={4} borderRadius="lg" overflow="hidden" boxShadow="xl">
+              <Image src={post.coverImage.url} width={2000} height={1000} layout="responsive" />
+            </Box>
+            <HStack spacing={4} mt={4} mb={8}>
+              <Avatar size="sm" name={post.author.name} src={post.author.picture.url} />
+              <Text fontSize="xl">
+                {post.author.name} &bull; {`${date}-${month}-${year}`}
+              </Text>
+            </HStack>
+            {documentToReactComponents(post.content.json, config)}
+          </Box>
+        </>
       )}
     </Flex>
   );
