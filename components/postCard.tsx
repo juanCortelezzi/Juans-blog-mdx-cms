@@ -2,10 +2,9 @@ import { IPost } from "../lib/apolloQuerys";
 import { Box, Avatar, Text, HStack, Link, useColorModeValue } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
+import { parseDate } from "../lib/parseDate";
 
 export const PostCard = ({ p }: { p: IPost }) => {
-  const originalDate = new Date(p.date);
-  const [month, date, year] = originalDate.toLocaleDateString("en-US").split("/");
   const shadow = useColorModeValue("2xl", "none");
   const borderColor = useColorModeValue("gray.300", "gray.700");
 
@@ -34,7 +33,7 @@ export const PostCard = ({ p }: { p: IPost }) => {
           <HStack spacing={4}>
             <Avatar size="sm" name={p.author.name} src={p.author.picture.url} />
             <Text fontSize="md">
-              {p.author.name} &bull; {`${date}-${month}-${year}`}
+              {p.author.name} &bull; {parseDate(p.date)}
             </Text>
           </HStack>
         </Box>

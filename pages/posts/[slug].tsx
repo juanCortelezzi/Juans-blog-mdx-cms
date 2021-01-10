@@ -8,6 +8,8 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 import { PostCard } from "../../components/postCard";
+import { parseDate } from "../../lib/parseDate";
+import ThemeSwitch from "../../components/themeSwitch";
 import {
   getPostData,
   getPostSlug,
@@ -31,7 +33,6 @@ import {
   Spacer,
   Box,
 } from "@chakra-ui/react";
-import ThemeSwitch from "../../components/themeSwitch";
 
 export default function Post({ post }: { post: IPost | null }) {
   const router = useRouter();
@@ -184,9 +185,6 @@ export default function Post({ post }: { post: IPost | null }) {
     },
   };
 
-  const originalDate = new Date(post.date);
-  const [month, date, year] = originalDate.toLocaleDateString("en-US").split("/");
-
   return (
     <Flex
       as="main"
@@ -233,7 +231,7 @@ export default function Post({ post }: { post: IPost | null }) {
             <HStack spacing={4} mt={4} mb={8}>
               <Avatar size="sm" name={post.author.name} src={post.author.picture.url} />
               <Text fontSize="xl">
-                {post.author.name} &bull; {`${date}-${month}-${year}`}
+                {post.author.name} &bull; {parseDate(post.date)}
               </Text>
             </HStack>
             {documentToReactComponents(post.content.json, config)}
