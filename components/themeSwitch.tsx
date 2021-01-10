@@ -5,7 +5,7 @@ export default function ThemeSwitch() {
   return (
     <IconButton
       aria-label="Toggle theme"
-      icon={colorMode === "light" ? <SunIcon /> : <MoonIcon />}
+      icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
       onClick={toggleColorMode}
     />
   );
