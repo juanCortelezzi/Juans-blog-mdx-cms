@@ -4,12 +4,12 @@ import { BLOCKS, MARKS, INLINES } from "@contentful/rich-text-types";
 import ErrorPage from "next/error";
 import Image from "next/image";
 import Head from "next/head";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 import { PostCard } from "../../components/postCard";
 import { parseDate } from "../../lib/parseDate";
 import ThemeSwitch from "../../components/themeSwitch";
+import { Link } from "../../components/link";
 import {
   getPostData,
   getPostSlug,
@@ -28,7 +28,6 @@ import {
   OrderedList,
   Center,
   Divider,
-  Link,
   Flex,
   Spacer,
   Box,
@@ -147,20 +146,18 @@ export default function Post({ post }: { post: IPost | null }) {
         }
       },
       [INLINES.HYPERLINK]: (node: any) => (
-        <NextLink href={node.data.uri} passHref>
-          <Link color="teal.500">{node.content[0].value}</Link>
-        </NextLink>
+        <Link href={node.data.uri} color="teal.500">
+          {node.content[0].value}
+        </Link>
       ),
       [INLINES.EMBEDDED_ENTRY]: (node: any) => {
         const [entry] = post.content.links.entries.inline.filter(
           (n: any) => n.sys.id === node.data.target.sys.id
         );
         return (
-          <NextLink href={`/posts/${entry.slug}`} passHref>
-            <Link color="teal.500">
-              '{entry.title}' by {entry.author.name}
-            </Link>
-          </NextLink>
+          <Link href={`/posts/${entry.slug}`} color="teal.500">
+            '{entry.title}' by {entry.author.name}
+          </Link>
         );
       },
     },
@@ -214,11 +211,9 @@ export default function Post({ post }: { post: IPost | null }) {
           </Head>
           <Box w="full" lineHeight="tall">
             <Flex justify="center" align="center" mb={4}>
-              <NextLink href="/" passHref>
-                <Link fontSize="2xl" fontWeight="semibold">
-                  Blog
-                </Link>
-              </NextLink>
+              <Link href="/" fontSize="2xl" fontWeight="semibold">
+                Blog
+              </Link>
               <Spacer />
               <ThemeSwitch />
             </Flex>
