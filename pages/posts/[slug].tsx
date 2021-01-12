@@ -4,19 +4,12 @@ import { BLOCKS, MARKS, INLINES } from "@contentful/rich-text-types";
 import ErrorPage from "next/error";
 import Image from "next/image";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { GetStaticProps } from "next";
 import { PostCard } from "../../components/postCard";
 import { parseDate } from "../../lib/parseDate";
 import ThemeSwitch from "../../components/themeSwitch";
 import { Link } from "../../components/link";
-import {
-  getPostData,
-  getPostSlug,
-  IGetPostData,
-  IGetPostSlug,
-  IPost,
-} from "../../lib/apolloQuerys";
+import { getPostData, getPostSlug, IGetPostSlug } from "../../lib/apolloQuerys";
 import {
   Heading,
   Text,
@@ -30,14 +23,21 @@ import {
   Divider,
   Flex,
   Spacer,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
   Box,
 } from "@chakra-ui/react";
+import { useQuery } from "@apollo/client";
 
-export default function Post({ post }: { post: IPost | null }) {
-  const router = useRouter();
-  if (!router.isFallback && !post) {
+export default function Post({ slug }: { slug: string }) {
+  const { loading, error, data } = useQuery(getPostData, { variables: { slug } });
+  const post = data?.postCollection?.items[0] || null;
+
+  if (!loading && (error || !post)) {
     return <ErrorPage statusCode={404} />;
   }
+
   const config = {
     renderNode: {
       [BLOCKS.PARAGRAPH]: (_node: any, children: any) => <Text fontSize="xl">{children}</Text>,
@@ -115,7 +115,7 @@ export default function Post({ post }: { post: IPost | null }) {
       [BLOCKS.HR]: () => <Divider my={4} />,
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
         const [image] = post.content.links.assets.block.filter(
-          (n) => n.sys.id === node.data.target.sys.id
+          (n: any) => n.sys.id === node.data.target.sys.id
         );
         return (
           <Center my={4}>
@@ -193,17 +193,7 @@ export default function Post({ post }: { post: IPost | null }) {
       mx="auto"
       p={4}
     >
-      {router.isFallback ? (
-        <>
-          <Head>
-            <title>Next Blog</title>
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-          <Center w="full" lineHeight="tall">
-            <Heading as="h1">Loading ...</Heading>
-          </Center>
-        </>
-      ) : (
+      {!loading && !error && post ? (
         <>
           <Head>
             <title>{post.title}</title>
@@ -232,6 +222,29 @@ export default function Post({ post }: { post: IPost | null }) {
             {documentToReactComponents(post.content.json, config)}
           </Box>
         </>
+      ) : (
+        <Box w="full" lineHeight="tall">
+          <Head>
+            <title>Next Blog</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <Flex justify="center" align="center" mb={4}>
+            <Link href="/" fontSize="2xl" fontWeight="semibold">
+              Blog
+            </Link>
+            <Spacer />
+            <ThemeSwitch />
+          </Flex>
+          <Skeleton height="40px" w={["md", null, "lg", "xl"]} mb={4} />
+          <Skeleton height="xl" w="full" />
+          <Box padding="6">
+            <HStack spacing={4} mt={4} mb={8}>
+              <SkeletonCircle size="10" />
+              <SkeletonText mt="4" noOfLines={1} spacing="4" />
+            </HStack>
+            <SkeletonText mt="4" noOfLines={4} spacing="4" />
+          </Box>
+        </Box>
       )}
     </Flex>
   );
@@ -255,15 +268,16 @@ export async function getStaticPaths() {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const client = initializeApollo();
-  let { data }: { data: IGetPostData } = await client.query({
+  await client.query({
     query: getPostData,
     variables: { slug: params.slug },
   });
 
   return {
     props: {
-      post: data?.postCollection?.items[0] ?? null,
+      initialApolloState: client.cache.extract(),
+      slug: params.slug,
     },
-    revalidate: 10,
+    revalidate: 60,
   };
 };
