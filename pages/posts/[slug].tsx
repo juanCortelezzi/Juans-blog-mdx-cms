@@ -40,7 +40,7 @@ export default function Post({ slug }: { slug: string }) {
 
   const config = {
     renderNode: {
-      [BLOCKS.PARAGRAPH]: (_node: any, children: any) => <Text fontSize="xl">{children}</Text>,
+      [BLOCKS.PARAGRAPH]: (_node: any, children: any) => <Text fontSize="lg">{children}</Text>,
       [BLOCKS.HEADING_1]: (node: any) => (
         <Heading as="h2" size="3xl" lineHeight="tall">
           {node.content[0].value}
@@ -72,16 +72,20 @@ export default function Post({ slug }: { slug: string }) {
         </Text>
       ),
       [BLOCKS.UL_LIST]: (_node: any, children: any) => (
-        <Center w="xs">
+        <Center w="xs" py={4}>
           <UnorderedList>{children}</UnorderedList>
         </Center>
       ),
       [BLOCKS.OL_LIST]: (_node: any, children: any) => (
-        <Center w="xs">
+        <Center w="xs" py={4}>
           <OrderedList>{children}</OrderedList>
         </Center>
       ),
-      [BLOCKS.LIST_ITEM]: (node: any) => <ListItem>{node.content[0].content[0].value}</ListItem>,
+      [BLOCKS.LIST_ITEM]: (node: any) => (
+        <ListItem>
+          <Text fontSize="lg">{node.content[0].content[0].value}</Text>
+        </ListItem>
+      ),
       [BLOCKS.QUOTE]: (_node: any, children: any) => (
         <Center my={4}>
           <Flex
@@ -100,7 +104,7 @@ export default function Post({ slug }: { slug: string }) {
               <Spacer />
             </Flex>
             <Spacer />
-            <Text as="i" fontSize="xl" align="center" w={3 / 4}>
+            <Text as="i" fontSize="lg" align="center" w={3 / 4}>
               {children}
             </Text>
             <Flex w="full">
@@ -163,13 +167,13 @@ export default function Post({ slug }: { slug: string }) {
     },
     renderMark: {
       [MARKS.BOLD]: (text: any) => (
-        <Text as="b" fontSize="xl" fontWeight="bold">
+        <Text as="b" fontSize="lg" fontWeight="bold">
           {text}
         </Text>
       ),
       [MARKS.CODE]: (text: any) => (
         <Flex as="span" display="block" my={4} justify="center" align="center" direction="column">
-          <Code fontSize="xl" display="block">
+          <Code fontSize="lg" display="block">
             {text}
           </Code>
         </Flex>
