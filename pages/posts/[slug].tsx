@@ -1,4 +1,4 @@
-import { initializeApollo } from "../../lib/apolloClient";
+import { initializeApollo, createApolloClient } from "../../lib/apolloClient";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, MARKS, INLINES } from "@contentful/rich-text-types";
 import ErrorPage from "next/error";
@@ -9,7 +9,8 @@ import { PostCard } from "../../components/postCard";
 import { parseDate } from "../../lib/parseDate";
 import ThemeSwitch from "../../components/themeSwitch";
 import { Link } from "../../components/link";
-import { getPostData, getPostSlug, IGetPostSlug } from "../../lib/apolloQuerys";
+import { getPostData, getPreviewPostData, getPostSlug, IGetPostSlug } from "../../lib/apolloQuerys";
+import { useQuery } from "@apollo/client";
 import {
   Heading,
   Text,
@@ -28,11 +29,36 @@ import {
   SkeletonText,
   Box,
 } from "@chakra-ui/react";
-import { useQuery } from "@apollo/client";
 
-export default function Post({ slug }: { slug: string }) {
-  const { loading, error, data } = useQuery(getPostData, { variables: { slug } });
-  const post = data?.postCollection?.items[0] || null;
+export default function Post({
+  slug,
+  preview,
+  previewPost,
+}: {
+  slug: string;
+  preview: boolean;
+  previewPost: any;
+}) {
+  let post: any;
+  let loading: boolean;
+  let error: any;
+
+  if (preview === true) {
+    loading = false;
+    post = previewPost;
+    if (!previewPost) {
+      error = true;
+    } else {
+      error = undefined;
+    }
+  } else {
+    const { loading: Loading, error: Error, data: Data } = useQuery(getPostData, {
+      variables: { slug },
+    });
+    post = Data?.postCollection?.items[0] || null;
+    loading = Loading;
+    error = Error;
+  }
 
   if (!loading && (error || !post)) {
     return <ErrorPage statusCode={404} />;
@@ -204,6 +230,13 @@ export default function Post({ slug }: { slug: string }) {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Box w="full" lineHeight="tall">
+            {preview ? (
+              <Flex justify="center" align="center" mb={2} bg="black" fg="white">
+                <Text fontSize="xl">this is a preview</Text>
+                &nbsp;
+                <Link href="/api/exit-preview">exit</Link>
+              </Flex>
+            ) : null}
             <Flex justify="center" align="center" mb={4}>
               <Link href="/" fontSize="2xl" fontWeight="semibold">
                 Blog
@@ -270,7 +303,23 @@ export async function getStaticPaths() {
   };
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params, preview = false }) => {
+  if (preview === true) {
+    const client = createApolloClient(true);
+    const { data } = await client.query({
+      query: getPreviewPostData,
+      variables: { slug: params.slug },
+    });
+    const previewPost = data?.postCollection?.items[0] || null;
+    return {
+      props: {
+        previewPost,
+        slug: params.slug,
+        preview,
+      },
+      revalidate: 60,
+    };
+  }
   const client = initializeApollo();
   await client.query({
     query: getPostData,
@@ -279,8 +328,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
+      previewPost: null,
       initialApolloState: client.cache.extract(),
       slug: params.slug,
+      preview,
     },
     revalidate: 60,
   };

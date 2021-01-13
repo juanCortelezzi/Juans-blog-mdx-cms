@@ -212,3 +212,110 @@ export const getPostData = gql`
     }
   }
 `;
+
+export const getPreviewPostData = gql`
+  query($slug: String!) {
+    postCollection(where: { slug: $slug }, preview: true, limit: 1) {
+      items {
+        title
+        coverImage {
+          url(
+            transform: { width: 2000, height: 1000, resizeStrategy: FILL, format: JPG_PROGRESSIVE }
+          )
+        }
+        date
+        author {
+          name
+          picture {
+            url
+          }
+        }
+        content {
+          json
+          links {
+            entries {
+              block {
+                ... on Post {
+                  sys {
+                    id
+                  }
+                  slug
+                  title
+                  coverImage {
+                    url(
+                      transform: {
+                        width: 2000
+                        height: 1000
+                        resizeStrategy: FILL
+                        format: JPG_PROGRESSIVE
+                      }
+                    )
+                  }
+                  date
+                  author {
+                    name
+                    picture {
+                      url
+                    }
+                  }
+                }
+                ... on Author {
+                  name
+                }
+              }
+              inline {
+                ... on Post {
+                  title
+                  author {
+                    name
+                  }
+                  sys {
+                    id
+                  }
+                  slug
+                }
+                ... on Author {
+                  name
+                }
+              }
+              hyperlink {
+                ... on Post {
+                  title
+                  author {
+                    name
+                  }
+                  coverImage {
+                    url
+                  }
+                  sys {
+                    id
+                  }
+                  slug
+                }
+                ... on Author {
+                  name
+                }
+              }
+            }
+            assets {
+              block {
+                url
+                title
+                sys {
+                  id
+                }
+              }
+              hyperlink {
+                url
+                title
+                sys {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

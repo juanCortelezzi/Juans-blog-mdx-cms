@@ -3,7 +3,7 @@ import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@a
 import { setContext } from "@apollo/client/link/context";
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-function createApolloClient() {
+export function createApolloClient(preview: boolean = false) {
   const httpLink = new HttpLink({
     uri: `https://graphql.contentful.com/content/v1/spaces/${process.env.SPACEID}`,
   });
@@ -11,7 +11,9 @@ function createApolloClient() {
     return {
       headers: {
         ...headers,
-        authorization: `Bearer ${process.env.ACCESSTOKEN}`,
+        authorization: `Bearer ${
+          preview ? process.env.CONTENTFUL_PREVIEW_SECRET : process.env.ACCESSTOKEN
+        }`,
       },
     };
   });
