@@ -1,15 +1,16 @@
 import { initializeApollo, createApolloClient } from "../../lib/apolloClient";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import ErrorPage from "next/error";
-import Image from "next/image";
-import Head from "next/head";
 import { GetStaticProps } from "next";
 import { useQuery } from "@apollo/client";
 import { parseDate } from "../../lib/parseDate";
-import ThemeSwitch from "../../components/themeSwitch";
 import { getConfig } from "../../lib/parserConfig";
 import { Link } from "../../components/link";
+import { PostNavbar } from "../../components/postNavbar";
 import { getPostData, getPreviewPostData, getPostSlug, IGetPostSlug } from "../../lib/apolloQuerys";
+import ThemeSwitch from "../../components/themeSwitch";
+import ErrorPage from "next/error";
+import Image from "next/image";
+import Head from "next/head";
 import {
   Heading,
   Text,
@@ -71,20 +72,7 @@ export default function Post({
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Box w="full" lineHeight="tall">
-            {preview ? (
-              <Flex justify="center" align="center" mb={2} bg="black" fg="white">
-                <Text fontSize="xl">this is a preview</Text>
-                &nbsp;
-                <Link href="/api/exit-preview">exit</Link>
-              </Flex>
-            ) : null}
-            <Flex justify="center" align="center" mb={4}>
-              <Link href="/" fontSize="2xl" fontWeight="semibold">
-                Blog
-              </Link>
-              <Spacer />
-              <ThemeSwitch />
-            </Flex>
+            <PostNavbar preview={preview} />
             <Heading as="h1" size="4xl" lineHeight="tall">
               {post.title}
             </Heading>
