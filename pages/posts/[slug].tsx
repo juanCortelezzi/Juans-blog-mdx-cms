@@ -73,7 +73,7 @@ export default function Post({
           </Head>
           <Box w="full" lineHeight="tall">
             <PostNavbar preview={preview} />
-            <Heading as="h1" size="4xl" lineHeight="tall">
+            <Heading as="h1" size="3xl" lineHeight="tall">
               {post.title}
             </Heading>
             <Box mb={4} borderRadius="lg" overflow="hidden" boxShadow="xl">

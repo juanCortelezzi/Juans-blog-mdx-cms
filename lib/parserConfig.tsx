@@ -18,34 +18,34 @@ import {
 
 export const getConfig = (post: any) => ({
   renderNode: {
-    [BLOCKS.PARAGRAPH]: (_node: any, children: any) => <Text fontSize="lg">{children}</Text>,
+    [BLOCKS.PARAGRAPH]: (_node: any, children: any) => <Text fontSize="md">{children}</Text>,
     [BLOCKS.HEADING_1]: (node: any) => (
-      <Heading as="h2" size="3xl" lineHeight="tall">
+      <Heading as="h2" size="lg" mt={12} mb={4}>
         {node.content[0].value}
       </Heading>
     ),
     [BLOCKS.HEADING_2]: (node: any) => (
-      <Heading as="h3" size="2xl" lineHeight="tall">
+      <Heading as="h3" size="lg" mt={12} mb={4}>
         {node.content[0].value}
       </Heading>
     ),
     [BLOCKS.HEADING_3]: (node: any) => (
-      <Heading as="h4" size="xl" lineHeight="tall">
+      <Heading as="h4" size="lg" mt={12} mb={4}>
         {node.content[0].value}
       </Heading>
     ),
     [BLOCKS.HEADING_4]: (node: any) => (
-      <Heading as="h5" size="xl" lineHeight="tall">
+      <Heading as="h5" size="lg" mt={12} mb={4}>
         {node.content[0].value}
       </Heading>
     ),
     [BLOCKS.HEADING_5]: (node: any) => (
-      <Heading as="h6" size="xl" lineHeight="tall">
+      <Heading as="h6" size="lg" mt={12} mb={4}>
         {node.content[0].value}
       </Heading>
     ),
     [BLOCKS.HEADING_6]: (node: any) => (
-      <Text fontSize="3xl" fontWeight="semibold" lineHeight="tall">
+      <Text fontSize="3xl" fontWeight="semibold" mt={12} mb={4}>
         {node.content[0].value}
       </Text>
     ),
@@ -61,7 +61,7 @@ export const getConfig = (post: any) => ({
     ),
     [BLOCKS.LIST_ITEM]: (node: any) => (
       <ListItem>
-        <Text fontSize="lg">{node.content[0].content[0].value}</Text>
+        <Text fontSize="md">{node.content[0].content[0].value}</Text>
       </ListItem>
     ),
     [BLOCKS.QUOTE]: (_node: any, children: any) => (
@@ -76,18 +76,18 @@ export const getConfig = (post: any) => ({
           p={4}
         >
           <Flex w="full">
-            <Text as="i" fontSize="4xl" fontWeight="bold" align="center">
+            <Text as="i" fontSize="3xl" fontWeight="bold" align="center">
               "
             </Text>
             <Spacer />
           </Flex>
           <Spacer />
-          <Text as="i" fontSize="lg" align="center" w={3 / 4}>
+          <Text as="i" fontSize="md" align="center" w={3 / 4}>
             {children}
           </Text>
           <Flex w="full">
             <Spacer />
-            <Text as="i" fontSize="4xl" fontWeight="bold" align="center">
+            <Text as="i" fontSize="3xl" fontWeight="bold" align="center">
               "
             </Text>
           </Flex>
@@ -145,13 +145,13 @@ export const getConfig = (post: any) => ({
   },
   renderMark: {
     [MARKS.BOLD]: (text: any) => (
-      <Text as="b" fontSize="lg" fontWeight="bold">
+      <Text as="b" fontSize="md" fontWeight="bold">
         {text}
       </Text>
     ),
     [MARKS.CODE]: (text: any) => (
       <Flex as="span" display="block" my={4} justify="center" align="center" direction="column">
-        <Code fontSize="lg" display="block">
+        <Code fontSize="md" display="block">
           {text}
         </Code>
       </Flex>

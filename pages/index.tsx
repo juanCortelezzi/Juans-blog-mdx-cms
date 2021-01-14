@@ -27,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex w="full" justify="center" align="center" mb={4} grow={2}>
-        <Heading as="h1" size="4xl" lineHeight="tall">
+        <Heading as="h1" size="3xl" lineHeight="tall">
           Next Blog
         </Heading>
         <Spacer />
