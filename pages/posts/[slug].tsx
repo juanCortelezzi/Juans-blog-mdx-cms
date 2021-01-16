@@ -1,12 +1,15 @@
 import { initializeApollo, createApolloClient } from "../../lib/apolloClient";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { GetStaticProps } from "next";
 import { useQuery } from "@apollo/client";
 import { parseDate } from "../../lib/parseDate";
-import { getConfig } from "../../lib/parserConfig";
 import { Link } from "../../components/link";
 import { PostNavbar } from "../../components/postNavbar";
-import { getPostData, getPreviewPostData, getPostSlug, IGetPostSlug } from "../../lib/apolloQuerys";
+import {
+  IGetPostSlug,
+  getMarkdownPostSlug,
+  getMarkdownPreviewData,
+  getMarkdownData,
+} from "../../lib/apolloQuerys";
 import ThemeSwitch from "../../components/themeSwitch";
 import ErrorPage from "next/error";
 import Image from "next/image";
@@ -23,6 +26,8 @@ import {
   SkeletonText,
   Box,
 } from "@chakra-ui/react";
+import ReactMarkdown from "react-markdown";
+import { renderers } from "../../lib/renderers";
 
 export default function Post({
   slug,
@@ -42,10 +47,10 @@ export default function Post({
     post = previewPost;
     if (!previewPost) error = true;
   } else {
-    const { loading: Loading, error: Error, data: Data } = useQuery(getPostData, {
+    const { loading: Loading, error: Error, data: Data } = useQuery(getMarkdownData, {
       variables: { slug },
     });
-    post = Data?.postCollection?.items[0] || null;
+    post = Data?.markdownPostCollection?.items[0] || null;
     loading = Loading;
     error = Error;
   }
@@ -85,7 +90,7 @@ export default function Post({
                 {post.author.name} &bull; {parseDate(post.date)}
               </Text>
             </HStack>
-            {documentToReactComponents(post.content.json, getConfig(post))}
+            <ReactMarkdown renderers={renderers()}>{post.content}</ReactMarkdown>
           </Box>
         </>
       ) : (
@@ -120,12 +125,12 @@ export async function getStaticPaths() {
   const client = initializeApollo();
 
   let { data }: { data: IGetPostSlug } = await client.query({
-    query: getPostSlug,
+    query: getMarkdownPostSlug,
   });
 
   return {
     paths:
-      data?.postCollection.items.map(({ slug }: { slug: string }) => ({
+      data?.markdownPostCollection.items.map(({ slug }: { slug: string }) => ({
         params: { slug },
       })) ?? [],
     fallback: true,
@@ -136,13 +141,13 @@ export const getStaticProps: GetStaticProps = async ({ params, preview = false }
   if (preview === true) {
     const client = createApolloClient(true);
     const { data } = await client.query({
-      query: getPreviewPostData,
+      query: getMarkdownPreviewData,
       variables: { slug: params.slug },
     });
 
     return {
       props: {
-        previewPost: data?.postCollection?.items[0] || null,
+        previewPost: data?.markdownPostCollection?.items[0] || null,
         slug: params.slug,
         preview,
       },
@@ -151,7 +156,7 @@ export const getStaticProps: GetStaticProps = async ({ params, preview = false }
   }
   const client = initializeApollo();
   await client.query({
-    query: getPostData,
+    query: getMarkdownData,
     variables: { slug: params.slug },
   });
 

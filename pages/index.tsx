@@ -1,15 +1,15 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import { initializeApollo } from "../lib/apolloClient";
-import { getHomeData, IPost } from "../lib/apolloQuerys";
+import { getMarkdownHomeData, IPost } from "../lib/apolloQuerys";
 import { Heading, Center, SimpleGrid, Flex, Box, Spacer } from "@chakra-ui/react";
 import { PostCard } from "../components/postCard";
 import ThemeSwitch from "../components/themeSwitch";
 import { useQuery } from "@apollo/client";
 
 export default function Home() {
-  const { /*loading, error,*/ data } = useQuery(getHomeData);
-  const posts = data.postCollection.items;
+  const { data } = useQuery(getMarkdownHomeData);
+  const posts = data.markdownPostCollection.items;
   return (
     <Flex
       as="main"
@@ -49,7 +49,7 @@ export default function Home() {
 export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
   await client.query({
-    query: getHomeData,
+    query: getMarkdownHomeData,
   });
 
   return {

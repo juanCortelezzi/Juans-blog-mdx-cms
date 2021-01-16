@@ -34,9 +34,37 @@ export interface IAuthor {
   picture: { url: string; width: number; height: number };
 }
 
-export const getHomeData = gql`
+export interface IGetPostSlug {
+  markdownPostCollection: { items: IPostSlug[] };
+}
+
+interface IPostSlug {
+  slug: string;
+}
+
+export interface IGetPostData {
+  postCollection: {
+    items: {
+      title: string;
+      coverImage: { url: string };
+      data: Date;
+      author: IAuthor;
+      content: string;
+    };
+  };
+}
+
+interface IAsset {
+  sys: {
+    id: string;
+  };
+  title: string;
+  url: string;
+}
+
+export const getMarkdownHomeData = gql`
   query {
-    postCollection(order: date_DESC) {
+    markdownPostCollection(order: date_DESC) {
       items {
         sys {
           id
@@ -60,17 +88,9 @@ export const getHomeData = gql`
   }
 `;
 
-export interface IGetPostSlug {
-  postCollection: { items: IPostSlug[] };
-}
-
-interface IPostSlug {
-  slug: string;
-}
-
-export const getPostSlug = gql`
+export const getMarkdownPostSlug = gql`
   query {
-    postCollection(order: date_DESC) {
+    markdownPostCollection(order: date_DESC) {
       items {
         slug
       }
@@ -78,37 +98,9 @@ export const getPostSlug = gql`
   }
 `;
 
-export interface IGetPostData {
-  postCollection: {
-    items: {
-      title: string;
-      coverImage: { url: string };
-      data: Date;
-      author: IAuthor;
-      content: {
-        json: any;
-        links: {
-          assets: {
-            block: IAsset[];
-            hyperlink: IAsset[];
-          };
-        };
-      };
-    };
-  };
-}
-
-interface IAsset {
-  sys: {
-    id: string;
-  };
-  title: string;
-  url: string;
-}
-
-export const getPostData = gql`
+export const getMarkdownData = gql`
   query($slug: String!) {
-    postCollection(where: { slug: $slug }, limit: 1) {
+    markdownPostCollection(where: { slug: $slug }) {
       items {
         title
         coverImage {
@@ -123,99 +115,15 @@ export const getPostData = gql`
             url
           }
         }
-        content {
-          json
-          links {
-            entries {
-              block {
-                ... on Post {
-                  sys {
-                    id
-                  }
-                  slug
-                  title
-                  coverImage {
-                    url(
-                      transform: {
-                        width: 2000
-                        height: 1000
-                        resizeStrategy: FILL
-                        format: JPG_PROGRESSIVE
-                      }
-                    )
-                  }
-                  date
-                  author {
-                    name
-                    picture {
-                      url
-                    }
-                  }
-                }
-                ... on Author {
-                  name
-                }
-              }
-              inline {
-                ... on Post {
-                  title
-                  author {
-                    name
-                  }
-                  sys {
-                    id
-                  }
-                  slug
-                }
-                ... on Author {
-                  name
-                }
-              }
-              hyperlink {
-                ... on Post {
-                  title
-                  author {
-                    name
-                  }
-                  coverImage {
-                    url
-                  }
-                  sys {
-                    id
-                  }
-                  slug
-                }
-                ... on Author {
-                  name
-                }
-              }
-            }
-            assets {
-              block {
-                url
-                title
-                sys {
-                  id
-                }
-              }
-              hyperlink {
-                url
-                title
-                sys {
-                  id
-                }
-              }
-            }
-          }
-        }
+        content
       }
     }
   }
 `;
 
-export const getPreviewPostData = gql`
+export const getMarkdownPreviewData = gql`
   query($slug: String!) {
-    postCollection(where: { slug: $slug }, preview: true, limit: 1) {
+    markdownPostCollection(where: { slug: $slug }, preview: true) {
       items {
         title
         coverImage {
@@ -230,91 +138,7 @@ export const getPreviewPostData = gql`
             url
           }
         }
-        content {
-          json
-          links {
-            entries {
-              block {
-                ... on Post {
-                  sys {
-                    id
-                  }
-                  slug
-                  title
-                  coverImage {
-                    url(
-                      transform: {
-                        width: 2000
-                        height: 1000
-                        resizeStrategy: FILL
-                        format: JPG_PROGRESSIVE
-                      }
-                    )
-                  }
-                  date
-                  author {
-                    name
-                    picture {
-                      url
-                    }
-                  }
-                }
-                ... on Author {
-                  name
-                }
-              }
-              inline {
-                ... on Post {
-                  title
-                  author {
-                    name
-                  }
-                  sys {
-                    id
-                  }
-                  slug
-                }
-                ... on Author {
-                  name
-                }
-              }
-              hyperlink {
-                ... on Post {
-                  title
-                  author {
-                    name
-                  }
-                  coverImage {
-                    url
-                  }
-                  sys {
-                    id
-                  }
-                  slug
-                }
-                ... on Author {
-                  name
-                }
-              }
-            }
-            assets {
-              block {
-                url
-                title
-                sys {
-                  id
-                }
-              }
-              hyperlink {
-                url
-                title
-                sys {
-                  id
-                }
-              }
-            }
-          }
-        }
+        content
       }
     }
   }
