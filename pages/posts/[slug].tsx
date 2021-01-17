@@ -3,6 +3,7 @@ import { GetStaticProps } from "next";
 import { useQuery } from "@apollo/client";
 import { parseDate } from "../../lib/parseDate";
 import { Link } from "../../components/link";
+import gfm from "remark-gfm";
 import { PostNavbar } from "../../components/postNavbar";
 import {
   IGetPostSlug,
@@ -90,7 +91,9 @@ export default function Post({
                 {post.author.name} &bull; {parseDate(post.date)}
               </Text>
             </HStack>
-            <ReactMarkdown renderers={renderers()}>{post.content}</ReactMarkdown>
+            <ReactMarkdown renderers={renderers()} plugins={[[gfm, { singleTilde: false }]]}>
+              {post.content}
+            </ReactMarkdown>
           </Box>
         </>
       ) : (
