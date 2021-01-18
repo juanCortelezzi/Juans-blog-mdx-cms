@@ -13,20 +13,7 @@ export interface IPost {
   coverImage: { url: string };
   date: Date;
   author: IAuthor;
-  content: {
-    json: any;
-    links: {
-      entries: {
-        block: any;
-        inline: any;
-        hyperlink: any;
-      };
-      assets: {
-        block: IAsset[];
-        hyperlink: IAsset[];
-      };
-    };
-  };
+  content: string;
 }
 
 export interface IAuthor {
@@ -43,7 +30,7 @@ interface IPostSlug {
 }
 
 export interface IGetPostData {
-  postCollection: {
+  markdownPostCollection: {
     items: {
       title: string;
       coverImage: { url: string };
@@ -52,14 +39,6 @@ export interface IGetPostData {
       content: string;
     };
   };
-}
-
-interface IAsset {
-  sys: {
-    id: string;
-  };
-  title: string;
-  url: string;
 }
 
 export const getMarkdownHomeData = gql`

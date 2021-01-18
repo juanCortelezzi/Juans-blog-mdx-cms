@@ -15,12 +15,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         Authorization: `Bearer ${process.env.CONTENTFUL_PREVIEW_SECRET}`,
       },
       body: JSON.stringify({
-        query: `query{postCollection(where:{slug:"${slug}"},preview:true,limit: 1){items{ slug }}}`,
+        query: `query{markdownPostCollection(where:{slug:"${slug}"},preview:true,limit: 1){items{ slug }}}`,
       }),
     }
   ).then((response) => response.json());
 
-  const post = data.data?.postCollection?.items[0];
+  const post = data.data?.markdownPostCollection?.items[0];
 
   if (!post) {
     return res.status(401).json({ message: "Invalid slug" });
