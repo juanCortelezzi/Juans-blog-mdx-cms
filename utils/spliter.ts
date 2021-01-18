@@ -8,7 +8,8 @@ const partition = (arr: any[], start: number, end: number, chunks: any[]) => {
 const spliter = (arr: any[]) => {
   const imgIndexes: number[] = [];
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i].props?.node?.type === "imageReference") imgIndexes.push(i);
+    if (arr[i].props?.node?.type === "imageReference" || arr[i].props?.node?.type === "image")
+      imgIndexes.push(i);
   }
 
   if (imgIndexes.length === 0) return [{ type: "P", children: arr }];

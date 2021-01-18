@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Link } from "../components/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import nord from "./nordColorscheme";
 import spliter from "../utils/spliter";
@@ -7,6 +6,7 @@ import createCode from "../utils/createCode";
 import {
   Heading,
   Box,
+  Link,
   Table,
   Thead,
   Tbody,
@@ -95,7 +95,11 @@ export const renderers = () => ({
               </Text>
             );
           } else {
-            return <Container key={createCode()}>{children}</Container>;
+            return (
+              <Container w="full" key={createCode()}>
+                {children}
+              </Container>
+            );
           }
         })}
       </>
@@ -174,11 +178,11 @@ export const renderers = () => ({
   imageReference: ({ src }) => {
     return (
       <Center my={margin}>
-        <Box w={["xs", "md", "xl", "3xl"]} maxW="3xl" borderRadius="lg" overflow="hidden">
+        <Box w={["full", "md", "xl", "3xl"]} borderRadius="lg" overflow="hidden">
           <Image
             src={`https:${src}`}
             width={2000}
-            height={1000}
+            height={1300}
             layout="responsive"
             objectFit="cover"
           />
@@ -186,9 +190,31 @@ export const renderers = () => ({
       </Center>
     );
   },
+  image: ({ src }) => {
+    return (
+      <Center my={margin}>
+        <Box w={["full", "md", "xl", "3xl"]} borderRadius="lg" overflow="hidden">
+          <Image
+            src={`https:${src}`}
+            width={2000}
+            height={1300}
+            layout="responsive"
+            objectFit="cover"
+          />
+        </Box>
+      </Center>
+    );
+  },
+  link: ({ href, children }) => {
+    return (
+      <Link href={href} color="teal.500" isExternal>
+        {children[0].props.children}
+      </Link>
+    );
+  },
   linkReference: ({ href, children }) => {
     return (
-      <Link href={href} color="teal.500">
+      <Link href={href} color="teal.500" isExternal>
         {children[0].props.children}
       </Link>
     );
