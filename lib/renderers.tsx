@@ -7,6 +7,12 @@ import createCode from "../utils/createCode";
 import {
   Heading,
   Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
   Code,
   Center,
   ListItem,
@@ -66,9 +72,9 @@ export const renderers = () => ({
         break;
       case 6:
         value = (
-          <Text fontSize="3xl" fontWeight="semibold" mt={marginTopHeader} mb={margin}>
+          <Heading as="p" size="lg" mt={marginTopHeader} mb={margin}>
             {children[0].value}
-          </Text>
+          </Heading>
         );
         break;
       default:
@@ -151,10 +157,24 @@ export const renderers = () => ({
     </Text>
   ),
   emphasis: ({ children }) => <Text as="i">{children}</Text>,
+  table: ({ children }) => (
+    <Center my={margin}>
+      <Box w={["xs", "md", "xl", "3xl"]} maxW="3xl" borderRadius="lg" overflow="hidden">
+        <Table>{children}</Table>
+      </Box>
+    </Center>
+  ),
+  tableHead: ({ children }) => <Thead>{children}</Thead>,
+  tableBody: ({ children }) => <Tbody>{children}</Tbody>,
+  tableRow: ({ children }) => <Tr>{children}</Tr>,
+  tableCell: ({ children, isHeader }) => {
+    if (isHeader) return <Th>{children}</Th>;
+    return <Td>{children}</Td>;
+  },
   imageReference: ({ src }) => {
     return (
       <Center my={margin}>
-        <Box w={["xs", "md", "xl", "2xl"]} maxW="2xl" borderRadius="lg" overflow="hidden">
+        <Box w={["xs", "md", "xl", "3xl"]} maxW="3xl" borderRadius="lg" overflow="hidden">
           <Image
             src={`https:${src}`}
             width={2000}
