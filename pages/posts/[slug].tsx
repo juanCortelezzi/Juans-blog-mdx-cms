@@ -31,15 +31,13 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-export default function Post({
-  slug,
-  preview = false,
-  previewPost = null,
-}: {
+interface IProps {
   slug: string;
   preview: boolean;
   previewPost: any;
-}) {
+}
+
+export default function Post({ slug, preview = false, previewPost = null }: IProps) {
   let post: any;
   let loading: boolean;
   let error: any;
@@ -72,8 +70,6 @@ export default function Post({
       mx="auto"
       p={4}
       exit={{ opacity: 0 }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
     >
       {!loading && !error && post ? (
         <>

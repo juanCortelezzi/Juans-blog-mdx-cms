@@ -2,11 +2,18 @@ import { GetStaticProps } from "next";
 import Head from "next/head";
 import { initializeApollo } from "../lib/apolloClient";
 import { getMarkdownHomeData, IPost } from "../lib/apolloQuerys";
-import { Heading, Center, SimpleGrid, Flex, Box, Spacer } from "@chakra-ui/react";
-import { MotionFlex } from "../components/motionComponents";
+import { Heading, Center, Flex, Spacer } from "@chakra-ui/react";
+import { MotionFlex, MotionSG } from "../components/motionComponents";
 import { PostCard } from "../components/postCard";
 import ThemeSwitch from "../components/themeSwitch";
 import { useQuery } from "@apollo/client";
+
+const container = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+};
+
+const stagger = { animate: { transition: { staggerChildren: 0.3 } } };
 
 export default function Home() {
   const { data } = useQuery(getMarkdownHomeData);
@@ -22,9 +29,10 @@ export default function Home() {
       mx="auto"
       p={4}
       basis={0}
-      exit={{ opacity: 0 }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      variants={container}
+      exit="initial"
+      initial="initial"
+      animate="animate"
     >
       <Head>
         <title>Next Blog</title>
@@ -35,16 +43,14 @@ export default function Home() {
           Next Blog
         </Heading>
         <Spacer />
-        <Box>
-          <ThemeSwitch />
-        </Box>
+        <ThemeSwitch />
       </Flex>
       <Center w="full">
-        <SimpleGrid columns={[1, null, null, null, 2]} spacing={8}>
+        <MotionSG columns={[1, null, null, null, 2]} spacing={8} variants={stagger}>
           {posts.map((p: IPost) => (
             <PostCard key={p.sys.id} p={p} />
           ))}
-        </SimpleGrid>
+        </MotionSG>
       </Center>
     </MotionFlex>
   );

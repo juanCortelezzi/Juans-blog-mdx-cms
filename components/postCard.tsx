@@ -3,13 +3,19 @@ import { Box, Skeleton, Avatar, Text, HStack, useColorModeValue } from "@chakra-
 import { parseDate } from "../lib/parseDate";
 import { Link } from "./link";
 import Image from "next/image";
+import { MotionBox } from "./motionComponents";
+
+const container = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0, transition: { ease: [0.6, -0.05, 0.01, 0.99], duration: 0.6 } },
+};
 
 export const PostCard = ({ p }: { p: IPost }) => {
   const shadow = useColorModeValue("2xl", "none");
   const borderColor = useColorModeValue("gray.300", "gray.700");
 
   return (
-    <Box
+    <MotionBox
       w={["xs", "md", "lg"]}
       maxW="xl"
       borderWidth="1px"
@@ -17,10 +23,17 @@ export const PostCard = ({ p }: { p: IPost }) => {
       borderColor={borderColor}
       overflow="hidden"
       boxShadow={shadow}
+      variants={container}
     >
       <Skeleton isLoaded>
         <Link href={`/posts/${p.slug}`}>
-          <Image src={`${p.coverImage.url}`} width={2000} height={1000} layout="responsive" />
+          <Image
+            src={`${p.coverImage.url}`}
+            width={2000}
+            height={1000}
+            layout="responsive"
+            alt={p.title}
+          />
         </Link>
       </Skeleton>
       <Box p={4}>
@@ -36,6 +49,6 @@ export const PostCard = ({ p }: { p: IPost }) => {
           </HStack>
         </Box>
       </Box>
-    </Box>
+    </MotionBox>
   );
 };
