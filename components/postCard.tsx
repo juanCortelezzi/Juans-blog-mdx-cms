@@ -1,5 +1,5 @@
 import { IPost } from "../lib/apolloQuerys";
-import { Box, Avatar, Text, HStack, useColorModeValue } from "@chakra-ui/react";
+import { Box, Skeleton, Avatar, Text, HStack, useColorModeValue } from "@chakra-ui/react";
 import { parseDate } from "../lib/parseDate";
 import { Link } from "./link";
 import Image from "next/image";
@@ -18,9 +18,11 @@ export const PostCard = ({ p }: { p: IPost }) => {
       overflow="hidden"
       boxShadow={shadow}
     >
-      <Link href={`/posts/${p.slug}`}>
-        <Image src={`${p.coverImage.url}`} width={2000} height={1000} layout="responsive" />
-      </Link>
+      <Skeleton isLoaded>
+        <Link href={`/posts/${p.slug}`}>
+          <Image src={`${p.coverImage.url}`} width={2000} height={1000} layout="responsive" />
+        </Link>
+      </Skeleton>
       <Box p={4}>
         <Box fontWeight="bold" as="h2" lineHeight="tight" fontSize="3xl" isTruncated>
           <Link href={`/posts/${p.slug}`}>{p.title}</Link>

@@ -3,6 +3,7 @@ import Head from "next/head";
 import { initializeApollo } from "../lib/apolloClient";
 import { getMarkdownHomeData, IPost } from "../lib/apolloQuerys";
 import { Heading, Center, SimpleGrid, Flex, Box, Spacer } from "@chakra-ui/react";
+import { MotionFlex } from "../components/motionComponents";
 import { PostCard } from "../components/postCard";
 import ThemeSwitch from "../components/themeSwitch";
 import { useQuery } from "@apollo/client";
@@ -11,7 +12,7 @@ export default function Home() {
   const { data } = useQuery(getMarkdownHomeData);
   const posts = data.markdownPostCollection.items;
   return (
-    <Flex
+    <MotionFlex
       as="main"
       justify="center"
       align="center"
@@ -21,6 +22,9 @@ export default function Home() {
       mx="auto"
       p={4}
       basis={0}
+      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       <Head>
         <title>Next Blog</title>
@@ -42,7 +46,7 @@ export default function Home() {
           ))}
         </SimpleGrid>
       </Center>
-    </Flex>
+    </MotionFlex>
   );
 }
 

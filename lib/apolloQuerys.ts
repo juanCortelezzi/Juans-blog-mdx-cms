@@ -59,7 +59,9 @@ export const getMarkdownHomeData = gql`
         author {
           name
           picture {
-            url
+            url(
+              transform: { width: 500, height: 250, resizeStrategy: FILL, format: JPG_PROGRESSIVE }
+            )
           }
         }
       }
@@ -91,7 +93,9 @@ export const getMarkdownData = gql`
         author {
           name
           picture {
-            url
+            url(
+              transform: { width: 500, height: 250, resizeStrategy: FILL, format: JPG_PROGRESSIVE }
+            )
           }
         }
         content
@@ -114,7 +118,9 @@ export const getMarkdownPreviewData = gql`
         author {
           name
           picture {
-            url
+            url(
+              transform: { width: 500, height: 250, resizeStrategy: FILL, format: JPG_PROGRESSIVE }
+            )
           }
         }
         content

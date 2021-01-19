@@ -1,6 +1,7 @@
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apolloClient";
 import { AppProps } from "next/dist/next-server/lib/router/router";
+import { AnimatePresence } from "framer-motion";
 import { ChakraProps, ChakraProvider, CSSReset, extendTheme } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 
@@ -16,13 +17,15 @@ const customTheme = extendTheme({
   },
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);
   return (
     <ApolloProvider client={apolloClient}>
       <ChakraProvider theme={customTheme}>
         <CSSReset />
-        <Component {...pageProps} />
+        <AnimatePresence exitBeforeEnter>
+          <Component {...pageProps} key={router.route} />
+        </AnimatePresence>
       </ChakraProvider>
     </ApolloProvider>
   );

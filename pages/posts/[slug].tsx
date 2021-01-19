@@ -3,8 +3,10 @@ import { GetStaticProps } from "next";
 import { useQuery } from "@apollo/client";
 import { parseDate } from "../../lib/parseDate";
 import { Link } from "../../components/link";
-import gfm from "remark-gfm";
+import { renderers } from "../../lib/renderers";
 import { PostNavbar } from "../../components/postNavbar";
+import gfm from "remark-gfm";
+import ReactMarkdown from "react-markdown";
 import {
   IGetPostSlug,
   getMarkdownPostSlug,
@@ -12,6 +14,7 @@ import {
   getMarkdownData,
 } from "../../lib/apolloQuerys";
 import ThemeSwitch from "../../components/themeSwitch";
+import { MotionFlex } from "../../components/motionComponents";
 import ErrorPage from "next/error";
 import Image from "next/image";
 import Head from "next/head";
@@ -27,8 +30,6 @@ import {
   SkeletonText,
   Box,
 } from "@chakra-ui/react";
-import ReactMarkdown from "react-markdown";
-import { renderers } from "../../lib/renderers";
 
 export default function Post({
   slug,
@@ -61,7 +62,7 @@ export default function Post({
   }
 
   return (
-    <Flex
+    <MotionFlex
       as="main"
       justify="center"
       align="center"
@@ -70,6 +71,9 @@ export default function Post({
       direction="column"
       mx="auto"
       p={4}
+      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       {!loading && !error && post ? (
         <>
@@ -120,7 +124,7 @@ export default function Post({
           </Box>
         </Box>
       )}
-    </Flex>
+    </MotionFlex>
   );
 }
 
