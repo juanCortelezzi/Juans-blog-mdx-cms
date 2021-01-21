@@ -21,6 +21,7 @@ import Head from "next/head";
 import {
   Heading,
   Text,
+  Container,
   Avatar,
   HStack,
   Flex,
@@ -72,14 +73,14 @@ export default function Post({ slug, preview = false, previewPost = null }: IPro
       exit={{ opacity: 0 }}
     >
       {!loading && !error && post ? (
-        <>
+        <Container maxW="3xl">
           <Head>
             <title>{post.title}</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Box w="full" lineHeight="tall">
             <PostNavbar preview={preview} />
-            <Heading as="h1" size="3xl" lineHeight="tall">
+            <Heading as="h1" size="2xl" my={8}>
               {post.title}
             </Heading>
             <Box mb={4} borderRadius="lg" overflow="hidden" boxShadow="xl">
@@ -95,9 +96,9 @@ export default function Post({ slug, preview = false, previewPost = null }: IPro
               {post.content}
             </ReactMarkdown>
           </Box>
-        </>
+        </Container>
       ) : (
-        <Box w="full" lineHeight="tall">
+        <Box w="full">
           <Head>
             <title>Next Blog</title>
             <link rel="icon" href="/favicon.ico" />

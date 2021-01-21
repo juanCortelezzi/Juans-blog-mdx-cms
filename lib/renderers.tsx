@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import nord from "./nordColorscheme";
 import spliter from "../utils/spliter";
 import createCode from "../utils/createCode";
+import PostImage from "../components/postImage";
 import {
   Heading,
   Box,
@@ -19,7 +19,6 @@ import {
   OrderedList,
   List,
   UnorderedList,
-  Container,
   Text,
   Divider,
   ListIcon,
@@ -96,9 +95,9 @@ export const renderers = () => ({
             );
           } else {
             return (
-              <Container w="full" key={createCode()}>
+              <Box w="100%" key={createCode()}>
                 {children}
-              </Container>
+              </Box>
             );
           }
         })}
@@ -107,23 +106,11 @@ export const renderers = () => ({
   },
   list: ({ ordered, children }) => {
     if (ordered) {
-      return (
-        <Center w="xs" py={margin}>
-          <OrderedList>{children}</OrderedList>
-        </Center>
-      );
+      return <OrderedList my={margin}>{children}</OrderedList>;
     } else if (children[0].props.node.checked !== null) {
-      return (
-        <Center w="xs" py={margin}>
-          <List>{children}</List>
-        </Center>
-      );
+      return <List my={margin}>{children}</List>;
     } else {
-      return (
-        <Center w="xs" py={margin}>
-          <UnorderedList>{children}</UnorderedList>
-        </Center>
-      );
+      return <UnorderedList my={margin}>{children}</UnorderedList>;
     }
   },
   listItem: ({ node: { checked }, children }) => {
@@ -175,36 +162,8 @@ export const renderers = () => ({
     if (isHeader) return <Th>{children}</Th>;
     return <Td>{children}</Td>;
   },
-  imageReference: ({ src }) => {
-    return (
-      <Center my={margin}>
-        <Box w={["full", "md", "xl", "3xl"]} borderRadius="lg" overflow="hidden">
-          <Image
-            src={`https:${src}`}
-            width={2000}
-            height={1300}
-            layout="responsive"
-            objectFit="cover"
-          />
-        </Box>
-      </Center>
-    );
-  },
-  image: ({ src }) => {
-    return (
-      <Center my={margin}>
-        <Box w={["full", "md", "xl", "3xl"]} borderRadius="lg" overflow="hidden">
-          <Image
-            src={`https:${src}`}
-            width={2000}
-            height={1300}
-            layout="responsive"
-            objectFit="cover"
-          />
-        </Box>
-      </Center>
-    );
-  },
+  imageReference: ({ src }) => <PostImage margin={margin} src={src} />,
+  image: ({ src }) => <PostImage margin={margin} src={src} />,
   link: ({ href, children }) => {
     return (
       <Link href={href} color="teal.500" isExternal>

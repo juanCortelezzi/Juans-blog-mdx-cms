@@ -1,19 +1,17 @@
-import { GetStaticProps } from "next";
 import Head from "next/head";
+import { GetStaticProps } from "next";
+import { useQuery } from "@apollo/client";
 import { initializeApollo } from "../lib/apolloClient";
 import { getMarkdownHomeData, IPost } from "../lib/apolloQuerys";
-import { Heading, Center, Flex, Spacer } from "@chakra-ui/react";
-import { MotionFlex, MotionSG } from "../components/motionComponents";
-import { PostCard } from "../components/postCard";
+import { Heading, Center, Flex, Spacer, SimpleGrid } from "@chakra-ui/react";
 import ThemeSwitch from "../components/themeSwitch";
-import { useQuery } from "@apollo/client";
+import { PostCard } from "../components/postCard";
+import { MotionFlex } from "../components/motionComponents";
 
 const container = {
   initial: { opacity: 0 },
-  animate: { opacity: 1 },
+  animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
-
-const stagger = { animate: { transition: { staggerChildren: 0.3 } } };
 
 export default function Home() {
   const { data } = useQuery(getMarkdownHomeData);
@@ -46,11 +44,11 @@ export default function Home() {
         <ThemeSwitch />
       </Flex>
       <Center w="full">
-        <MotionSG columns={[1, null, null, null, 2]} spacing={8} variants={stagger}>
+        <SimpleGrid columns={[1, null, null, null, 2]} spacing={8}>
           {posts.map((p: IPost) => (
             <PostCard key={p.sys.id} p={p} />
           ))}
-        </MotionSG>
+        </SimpleGrid>
       </Center>
     </MotionFlex>
   );

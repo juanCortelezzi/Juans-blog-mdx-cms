@@ -25,7 +25,7 @@ export const PostNavbar = ({ preview }: { preview: boolean }) => {
           </Link>
         </Flex>
       ) : null}
-      <Flex justify="center" align="center" mb={4} mt={preview ? 12 : 0}>
+      <Flex justify="center" align="center" mt={preview ? 12 : 0}>
         <Link href="/" fontSize="2xl" fontWeight="semibold">
           Blog
         </Link>
