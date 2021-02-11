@@ -3,10 +3,11 @@ import { GetStaticProps } from "next";
 import { useQuery } from "@apollo/client";
 import { initializeApollo } from "../lib/apolloClient";
 import { getMarkdownHomeData, IPost } from "../lib/apolloQuerys";
-import { Heading, Center, Flex, Spacer, SimpleGrid } from "@chakra-ui/react";
+import { Heading, Center, Flex, Spacer, SimpleGrid, HStack } from "@chakra-ui/react";
 import ThemeSwitch from "../components/themeSwitch";
 import { PostCard } from "../components/postCard";
 import { MotionFlex } from "../components/motionComponents";
+import { Link } from "../components/link";
 
 const container = {
   initial: { opacity: 0 },
@@ -37,11 +38,23 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex w="full" justify="center" align="center" mb={4} grow={2}>
-        <Heading as="h1" size="3xl" lineHeight="tall">
+        <Heading as="h1" size="3xl">
           Next Blog
         </Heading>
         <Spacer />
+        <HStack spacing={8}>
+          <Link href="#">
+            <Heading as="h2" size="md">
+              About
+            </Heading>
+          </Link>
+          <Link href="#">
+            <Heading as="h2" size="md">
+              Contact
+            </Heading>
+          </Link>
         <ThemeSwitch />
+        </HStack>
       </Flex>
       <Center w="full">
         <SimpleGrid columns={[1, null, null, null, 2]} spacing={8}>
