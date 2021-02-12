@@ -5,7 +5,7 @@ const container = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
-export default function Home() {
+export default function Projects() {
   return (
     <MotionFlex
       as="main"
@@ -27,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <h2>juanba</h2>
+      <h2>projects</h2>
     </MotionFlex>
   );
 }

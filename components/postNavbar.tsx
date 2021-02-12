@@ -1,4 +1,5 @@
 import { Text, Flex, Spacer, useColorModeValue } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import ThemeSwitch from "./themeSwitch";
 import { Link } from "./link";
 export const PostNavbar = ({ preview }: { preview: boolean }) => {
@@ -26,8 +27,8 @@ export const PostNavbar = ({ preview }: { preview: boolean }) => {
         </Flex>
       ) : null}
       <Flex justify="center" align="center" mt={preview ? 12 : 0}>
-        <Link href="/" fontSize="2xl" fontWeight="semibold">
-          Blog
+        <Link href="/blog" fontSize="2xl" fontWeight="semibold">
+          <ArrowBackIcon /> Blog
         </Link>
         <Spacer />
         <ThemeSwitch />
