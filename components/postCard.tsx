@@ -16,8 +16,6 @@ export const PostCard = ({ p }: { p: IPost }) => {
 
   return (
     <MotionBox
-      w={["xs", "md", "lg"]}
-      maxW="xl"
       borderWidth="1px"
       borderRadius="lg"
       borderColor={borderColor}

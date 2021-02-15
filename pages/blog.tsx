@@ -21,7 +21,7 @@ export default function Blog() {
       as="main"
       justify="center"
       align="center"
-      maxW="6xl"
+      maxW="4xl"
       w="full"
       direction="column"
       mx="auto"
@@ -39,7 +39,7 @@ export default function Blog() {
       </Head>
       <Navbar />
       <Center w="full">
-        <SimpleGrid columns={[1, null, null, null, 2]} spacing={8}>
+        <SimpleGrid columns={[1, null, null, 2]} spacing={8}>
           {posts.map((p: IPost) => (
             <PostCard key={p.sys.id} p={p} />
           ))}

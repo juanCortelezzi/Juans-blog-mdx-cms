@@ -11,7 +11,7 @@ export default function Projects() {
       as="main"
       justify="center"
       align="center"
-      maxW="6xl"
+      maxW="4xl"
       w="full"
       direction="column"
       mx="auto"
