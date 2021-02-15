@@ -1,15 +1,17 @@
-import { ChakraProps, extendTheme } from "@chakra-ui/react";
+import { ChakraProps, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
-export default extendTheme({
-  config: {
-    useSystemColorMode: false,
-    initialColorMode: "dark",
-  },
-  styles: {
-    global: (props: ChakraProps) => ({
-      body: {
-        bg: mode("white", "gray.800")(props),
-      },
-    }),
-  },
-});
+
+const config: Partial<ThemeConfig> = {
+  useSystemColorMode: false,
+  initialColorMode: "dark",
+};
+
+const styles = {
+  global: (props: ChakraProps) => ({
+    body: {
+      bg: mode("white", "gray.800")(props),
+    },
+  }),
+} as any;
+
+export default extendTheme({ config, styles });
