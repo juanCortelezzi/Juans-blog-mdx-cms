@@ -29,6 +29,7 @@ import { CheckCircleIcon, MinusIcon } from "@chakra-ui/icons";
 
 const margin = 4;
 const marginTopHeader = 12;
+const textColor = "gray.300";
 
 export const renderers = () => ({
   heading: ({ level, node: { children } }) => {
@@ -89,7 +90,7 @@ export const renderers = () => ({
         {spliter(children).map((i: any) => {
           if (i.type === "P") {
             return (
-              <Text fontSize="md" key={createCode()}>
+              <Text fontSize="md" color={textColor} key={createCode()}>
                 {i.children}
               </Text>
             );
@@ -143,7 +144,7 @@ export const renderers = () => ({
   ),
   inlineCode: ({ value }) => <Code>{value}</Code>,
   strong: ({ children }) => (
-    <Text as="b" fontSize="md" fontWeight="bold">
+    <Text as="b" fontSize="md" fontWeight="bold" color={textColor}>
       {children}
     </Text>
   ),

@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { MotionFlex } from "../components/motionComponents";
+import { Heading, Text } from "@chakra-ui/react";
+import { MotionBox } from "../components/motionComponents";
 import Navbar from "../components/navbar";
 const container = {
   initial: { opacity: 0 },
@@ -7,16 +8,13 @@ const container = {
 };
 export default function Home() {
   return (
-    <MotionFlex
+    <MotionBox
       as="main"
-      justify="center"
-      align="center"
-      maxW="6xl"
+      maxW="4xl"
       w="full"
-      direction="column"
       mx="auto"
       p={4}
-      basis={0}
+      pt={0}
       variants={container}
       exit="initial"
       initial="initial"
@@ -27,7 +25,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <h2>juanba</h2>
-    </MotionFlex>
+      <Heading as="h2" size="2xl">
+        Hey, i'm Juan Cortelezzi
+      </Heading>
+      <Text fontSize="large" my={2} color="gray.300">
+        I'm a self taught web developer, currently studying software engeneering at Austal
+        University. You've found my personal slice of the internet, feel free to look around
+      </Text>
+    </MotionBox>
   );
 }

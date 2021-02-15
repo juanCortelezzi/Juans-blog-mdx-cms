@@ -26,6 +26,7 @@ export default function Blog() {
       direction="column"
       mx="auto"
       p={4}
+      pt={0}
       basis={0}
       variants={container}
       exit="initial"
