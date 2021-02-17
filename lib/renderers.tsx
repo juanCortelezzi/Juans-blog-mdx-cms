@@ -29,9 +29,8 @@ import { CheckCircleIcon, MinusIcon } from "@chakra-ui/icons";
 
 const margin = 4;
 const marginTopHeader = 12;
-const textColor = "gray.300";
 
-export const renderers = () => ({
+export const renderers = (textColor: string, shadow: string) => ({
   heading: ({ level, node: { children } }) => {
     let value: any;
     switch (level) {
@@ -136,8 +135,8 @@ export const renderers = () => ({
     }
   },
   code: ({ language, value }) => (
-    <Center my={margin}>
-      <Box as="span" w="full" borderRadius="lg" overflow="hidden">
+    <Center my={margin} overflow="hidden">
+      <Box w="full" h="full" borderRadius="lg">
         <SyntaxHighlighter style={nord} language={language} children={value} />
       </Box>
     </Center>
@@ -163,8 +162,8 @@ export const renderers = () => ({
     if (isHeader) return <Th>{children}</Th>;
     return <Td>{children}</Td>;
   },
-  imageReference: ({ src }) => <PostImage margin={margin} src={src} />,
-  image: ({ src }) => <PostImage margin={margin} src={src} />,
+  imageReference: ({ src }) => <PostImage margin={margin} src={src} shadow={shadow} />,
+  image: ({ src }) => <PostImage margin={margin} src={src} shadow={shadow} />,
   link: ({ href, children }) => {
     return (
       <Link href={href} color="teal.500" isExternal>

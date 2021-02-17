@@ -1,9 +1,9 @@
 import { IPost } from "../lib/apolloQuerys";
-import { Box, Skeleton, Avatar, Text, HStack, useColorModeValue } from "@chakra-ui/react";
+import { Box, Avatar, Text, HStack, useColorModeValue } from "@chakra-ui/react";
 import { parseDate } from "../lib/parseDate";
-import { Link } from "./link";
+import { LinkOverlay } from "./link";
 import Image from "next/image";
-import { MotionBox } from "./motionComponents";
+import { MotionLinkBox } from "./motionComponents";
 
 const container = {
   initial: { opacity: 0, y: 60 },
@@ -15,7 +15,8 @@ export const PostCard = ({ p }: { p: IPost }) => {
   const borderColor = useColorModeValue("gray.300", "gray.700");
 
   return (
-    <MotionBox
+    <MotionLinkBox
+      as="article"
       borderWidth="1px"
       borderRadius="lg"
       borderColor={borderColor}
@@ -23,30 +24,28 @@ export const PostCard = ({ p }: { p: IPost }) => {
       boxShadow={shadow}
       variants={container}
     >
-      <Skeleton isLoaded>
-        <Link href={`/posts/${p.slug}`}>
-          <Image
-            src={`${p.coverImage.url}`}
-            width={2000}
-            height={1000}
-            layout="responsive"
-            alt={p.title}
-          />
-        </Link>
-      </Skeleton>
+      <LinkOverlay href={`/posts/${p.slug}`}>
+        <Image
+          src={`${p.coverImage.url}`}
+          width={2000}
+          height={1000}
+          layout="responsive"
+          alt={p.title}
+        />
+      </LinkOverlay>
       <Box p={4}>
         <Box fontWeight="bold" as="h2" lineHeight="tight" fontSize="3xl" isTruncated>
-          <Link href={`/posts/${p.slug}`}>{p.title}</Link>
+          <LinkOverlay href={`/posts/${p.slug}`}>{p.title}</LinkOverlay>
         </Box>
         <Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="sm" mt="2">
           <HStack spacing={4}>
             <Avatar size="sm" name={p.author.name} src={p.author.picture.url} />
-            <Text fontSize="md">
+            <Text fontSize="md" color="gray.400">
               {p.author.name} &bull; {parseDate(p.date)}
             </Text>
           </HStack>
         </Box>
       </Box>
-    </MotionBox>
+    </MotionLinkBox>
   );
 };
