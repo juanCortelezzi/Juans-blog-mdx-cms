@@ -1,10 +1,10 @@
-import { initializeApollo, createApolloClient } from "../../lib/apolloClient";
+import { initializeApollo, createApolloClient } from "@/lib/apolloClient";
 import { GetStaticProps } from "next";
 import { useQuery } from "@apollo/client";
-import { parseDate } from "../../lib/parseDate";
-import { Link } from "../../components/link";
-import { renderers } from "../../lib/renderers";
-import { PostNavbar } from "../../components/postNavbar";
+import { parseDate } from "@/utils/parseDate";
+import { Link } from "@/components/link";
+import { renderers } from "@/lib/renderers";
+import { PostNavbar } from "@/components/postNavbar";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import {
@@ -12,9 +12,9 @@ import {
   getMarkdownPostSlug,
   getMarkdownPreviewData,
   getMarkdownData,
-} from "../../lib/apolloQuerys";
-import ThemeSwitch from "../../components/themeSwitch";
-import { MotionFlex } from "../../components/motionComponents";
+} from "@/lib/apolloQuerys";
+import ThemeSwitch from "@/components/themeSwitch";
+import { MotionFlex } from "@/components/motionComponents";
 import ErrorPage from "next/error";
 import Image from "next/image";
 import Head from "next/head";

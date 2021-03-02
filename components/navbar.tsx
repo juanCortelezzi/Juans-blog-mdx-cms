@@ -1,6 +1,6 @@
 import { Heading, Flex, Spacer, HStack } from "@chakra-ui/react";
-import ThemeSwitch from "../components/themeSwitch";
-import { Link } from "../components/link";
+import ThemeSwitch from "@/components/themeSwitch";
+import { Link } from "@/components/link";
 import { useRouter } from "next/router";
 export default function Navbar() {
   const router = useRouter();

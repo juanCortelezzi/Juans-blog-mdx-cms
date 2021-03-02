@@ -1,6 +1,6 @@
-import { IPost } from "../lib/apolloQuerys";
+import { IPost } from "@/lib/apolloQuerys";
 import { Box, Avatar, Text, HStack, useColorModeValue } from "@chakra-ui/react";
-import { parseDate } from "../lib/parseDate";
+import { parseDate } from "@/utils/parseDate";
 import { LinkOverlay } from "./link";
 import Image from "next/image";
 import { MotionLinkBox } from "./motionComponents";
@@ -34,7 +34,7 @@ export const PostCard = ({ p }: { p: IPost }) => {
         />
       </LinkOverlay>
       <Box p={4}>
-        <Box fontWeight="bold" as="h2" lineHeight="tight" fontSize="3xl" isTruncated>
+        <Box fontWeight="semibold" as="h2" fontSize="2xl" isTruncated>
           <LinkOverlay href={`/posts/${p.slug}`}>{p.title}</LinkOverlay>
         </Box>
         <Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="sm" mt="2">

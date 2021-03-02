@@ -1,6 +1,6 @@
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apolloClient";
-import { AppProps } from "next/dist/next-server/lib/router/router";
+import { useApollo } from "@/lib/apolloClient";
+import { AppProps } from "next/app";
 import { AnimatePresence } from "framer-motion";
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import theme from "../theme";

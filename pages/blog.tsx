@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { GetStaticProps } from "next";
 import { useQuery } from "@apollo/client";
-import { initializeApollo } from "../lib/apolloClient";
-import { getMarkdownHomeData, IPost } from "../lib/apolloQuerys";
+import { initializeApollo } from "@/lib/apolloClient";
+import { getMarkdownHomeData, IPost } from "@/lib/apolloQuerys";
 import { Center, SimpleGrid } from "@chakra-ui/react";
-import { PostCard } from "../components/postCard";
-import { MotionFlex } from "../components/motionComponents";
-import Navbar from "../components/navbar";
+import { PostCard } from "@/components/postCard";
+import { MotionFlex } from "@/components/motionComponents";
+import Navbar from "@/components/navbar";
 
 const container = {
   initial: { opacity: 0 },

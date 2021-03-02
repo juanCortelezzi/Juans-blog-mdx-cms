@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Heading, Text, useColorModeValue } from "@chakra-ui/react";
-import { MotionBox } from "../components/motionComponents";
-import Navbar from "../components/navbar";
+import { MotionBox } from "@/components/motionComponents";
+import Navbar from "@/components/navbar";
 const container = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
