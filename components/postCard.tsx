@@ -12,7 +12,8 @@ const container = {
 
 export const PostCard = ({ p }: { p: IPost }) => {
   const shadow = useColorModeValue("2xl", "none");
-  const borderColor = useColorModeValue("gray.300", "gray.700");
+  const borderColor = useColorModeValue("gray.400", "gray.700");
+  const textColor = useColorModeValue("gray.500", "gray.400");
 
   return (
     <MotionLinkBox
@@ -40,7 +41,7 @@ export const PostCard = ({ p }: { p: IPost }) => {
         <Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="sm" mt="2">
           <HStack spacing={4}>
             <Avatar size="sm" name={p.author.name} src={p.author.picture.url} />
-            <Text fontSize="md" color="gray.400">
+            <Text fontSize="md" color={textColor}>
               {p.author.name} &bull; {parseDate(p.date)}
             </Text>
           </HStack>

@@ -11,6 +11,7 @@ const container = {
 export default function ProjectCard({ name, description, created_at, updated_at, html_url }) {
   const shadow = useColorModeValue("2xl", "none");
   const borderColor = useColorModeValue("gray.300", "gray.700");
+  const textColor = useColorModeValue("gray.500", "gray.400");
   return (
     <MotionLinkBox
       w="full"
@@ -29,7 +30,7 @@ export default function ProjectCard({ name, description, created_at, updated_at,
         </Heading>
       </LinkOverlay>
       <Text my={2}>{description}</Text>
-      <Text fontSize="md" color="gray.400">
+      <Text fontSize="md" color={textColor}>
         Created at: {parseDate(created_at)} &bull; Last updated {parseDateFromNow(updated_at)}
       </Text>
     </MotionLinkBox>

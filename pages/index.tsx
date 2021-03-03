@@ -2,10 +2,12 @@ import Head from "next/head";
 import { Heading, Text, useColorModeValue } from "@chakra-ui/react";
 import { MotionBox } from "@/components/motionComponents";
 import Navbar from "@/components/navbar";
+
 const container = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
+
 export default function Home() {
   const textColor = useColorModeValue("gray.800", "gray.300");
   return (
@@ -31,7 +33,7 @@ export default function Home() {
       </Heading>
       <Text fontSize="large" my={2} color={textColor}>
         I'm a self taught web developer, currently studying software engeneering at Austal
-        University. You've found my personal slice of the internet, feel free to look around
+        University. You've found my personal slice of the internet, feel free to look around.
       </Text>
     </MotionBox>
   );

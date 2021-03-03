@@ -19,14 +19,14 @@ export default function Blog() {
   return (
     <MotionFlex
       as="main"
-      justify="center"
-      align="center"
       maxW="4xl"
       w="full"
-      direction="column"
       mx="auto"
       p={4}
       pt={0}
+      justify="center"
+      align="center"
+      direction="column"
       basis={0}
       variants={container}
       exit="initial"
