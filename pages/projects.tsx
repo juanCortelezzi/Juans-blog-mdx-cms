@@ -2,11 +2,35 @@ import Head from "next/head";
 import { MotionFlex } from "@/components/motionComponents";
 import Navbar from "@/components/navbar";
 import ProjectCard from "@/components/projectCard";
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+  Button,
+  FormLabel,
+  FormControl,
+  VisuallyHidden,
+} from "@chakra-ui/react";
+import Fuse from "fuse.js";
+import { useState } from "react";
+
 const container = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
+
 export default function Projects({ data }) {
+  const [search, setSearch] = useState("");
+
+  const options = { keys: ["name", "description"] };
+
+  const fuse = new Fuse(data, options);
+  const results = fuse.search(search);
+  let dataResults = results.map((r) => r.item);
+  if (dataResults.length < 1) {
+    dataResults = data;
+  }
+
   return (
     <MotionFlex
       as="main"
@@ -29,7 +53,33 @@ export default function Projects({ data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      {data.map((d: any) => (
+      <form
+        style={{ width: "100%" }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log(dataResults);
+        }}
+      >
+        <FormControl id="projectSearch">
+          <VisuallyHidden>
+            <FormLabel>Search</FormLabel>
+          </VisuallyHidden>
+          <InputGroup size="md">
+            <Input
+              type="text"
+              placeholder="search a project"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <InputRightElement w="4.5rem" pr={1}>
+              <Button size="sm" type="submit">
+                Search
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+      </form>
+      {dataResults.map((d: any) => (
         <ProjectCard
           key={d.id}
           name={d.name}
