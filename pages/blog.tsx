@@ -7,6 +7,17 @@ import { Center, SimpleGrid } from "@chakra-ui/react";
 import { PostCard } from "@/components/postCard";
 import { MotionFlex } from "@/components/motionComponents";
 import Navbar from "@/components/navbar";
+import Fuse from "fuse.js";
+import { useState } from "react";
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+  Button,
+  FormLabel,
+  FormControl,
+  VisuallyHidden,
+} from "@chakra-ui/react";
 
 const container = {
   initial: { opacity: 0 },
@@ -16,6 +27,15 @@ const container = {
 export default function Blog() {
   const { data } = useQuery(getMarkdownHomeData);
   const posts = data.markdownPostCollection.items;
+
+  const [search, setSearch] = useState("");
+  const options = { keys: ["title", "date"] };
+  const fuse = new Fuse(posts, options);
+  const results = fuse.search(search);
+  let dataResults = results.map((r) => r.item);
+  if (dataResults.length < 1) {
+    dataResults = posts;
+  }
   return (
     <MotionFlex
       as="main"
@@ -38,9 +58,36 @@ export default function Blog() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Center w="full">
+
+      <form
+        style={{ width: "100%" }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log(dataResults);
+        }}
+      >
+        <FormControl id="projectSearch">
+          <VisuallyHidden>
+            <FormLabel>Search</FormLabel>
+          </VisuallyHidden>
+          <InputGroup size="md">
+            <Input
+              type="text"
+              placeholder="search a project"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <InputRightElement w="4.5rem" pr={1}>
+              <Button size="sm" type="submit">
+                Search
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+      </form>
+      <Center w="full" mt={8}>
         <SimpleGrid columns={[1, null, null, 2]} spacing={8}>
-          {posts.map((p: IPost) => (
+          {dataResults.map((p: IPost) => (
             <PostCard key={p.sys.id} p={p} />
           ))}
         </SimpleGrid>

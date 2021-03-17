@@ -2,9 +2,10 @@
 a blog created with nextjs typescript apollo gql and contentful cms
 
 ## TODO
-- [ ] add fuzzy (FUZE) finder on blogs and projects
+- [ ] remove graphql for regular fetch api
 
 ## DONE
+- [✓] add fuzzy (FUZE) finder on blogs and projects
 - [✓] fix barely readable text on light mode
 - [✓] make Projects page to work with ISR instead of SSG
 - [✓] post card author color gray.400

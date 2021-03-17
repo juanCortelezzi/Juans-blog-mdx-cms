@@ -22,7 +22,7 @@ export default function ProjectCard({ name, description, created_at, updated_at,
       boxShadow={shadow}
       variants={container}
       p={4}
-      my={4}
+      my={3}
     >
       <LinkOverlay href={html_url}>
         <Heading as="h2" fontWeight="semibold" fontSize="2xl" isTruncated>

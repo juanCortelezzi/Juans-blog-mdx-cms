@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormControl,
   VisuallyHidden,
+  Box,
 } from "@chakra-ui/react";
 import Fuse from "fuse.js";
 import { useState } from "react";
@@ -79,16 +80,18 @@ export default function Projects({ data }) {
           </InputGroup>
         </FormControl>
       </form>
-      {dataResults.map((d: any) => (
-        <ProjectCard
-          key={d.id}
-          name={d.name}
-          description={d.description}
-          created_at={d.created_at}
-          updated_at={d.updated_at}
-          html_url={d.html_url}
-        />
-      ))}
+      <Box w="full">
+        {dataResults.map((d: any) => (
+          <ProjectCard
+            key={d.id}
+            name={d.name}
+            description={d.description}
+            created_at={d.created_at}
+            updated_at={d.updated_at}
+            html_url={d.html_url}
+          />
+        ))}
+      </Box>
     </MotionFlex>
   );
 }
