@@ -9,6 +9,7 @@ import { MotionFlex } from "@/components/motionComponents";
 import ErrorPage from "next/error";
 import Image from "next/image";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { Heading, Text, Container, Avatar, HStack, Box, useColorModeValue } from "@chakra-ui/react";
 
 interface IProps {
@@ -17,7 +18,8 @@ interface IProps {
 }
 
 export default function Post({ preview, post }: IProps) {
-  if (!post) {
+  const router = useRouter();
+  if (!router.isFallback && !post) {
     return <ErrorPage statusCode={404} />;
   }
 
@@ -38,29 +40,44 @@ export default function Post({ preview, post }: IProps) {
       exit={{ opacity: 0 }}
     >
       <Container maxW="4xl">
-        <Head>
-          <title>{post.title}</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <PostNavbar preview={preview} />
-        <Heading as="h1" size="2xl" my={8}>
-          {post.title}
-        </Heading>
-        <Box mb={4} borderRadius="lg" overflow="hidden" boxShadow={shadow}>
-          <Image src={post.coverImage.url} width={2000} height={1000} layout="responsive" />
-        </Box>
-        <HStack spacing={4} mt={4} mb={8}>
-          <Avatar size="sm" name={post.author.name} src={post.author.picture.url} />
-          <Text fontSize="xl">
-            {post.author.name} &bull; {parseDate(post.date)}
-          </Text>
-        </HStack>
-        <ReactMarkdown
-          renderers={renderers(textColor, shadow)}
-          plugins={[[gfm, { singleTilde: false }]]}
-        >
-          {post.content}
-        </ReactMarkdown>
+        {router.isFallback ? (
+          <>
+            <Head>
+              <title>Next Blog</title>
+              <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <PostNavbar preview={preview} />
+            <Heading as="h1" size="2xl" my={8}>
+              Loading…
+            </Heading>
+          </>
+        ) : (
+          <>
+            <Head>
+              <title>{post.title}</title>
+              <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <PostNavbar preview={preview} />
+            <Heading as="h1" size="2xl" my={8}>
+              {post.title}
+            </Heading>
+            <Box mb={4} borderRadius="lg" overflow="hidden" boxShadow={shadow}>
+              <Image src={post.coverImage.url} width={2000} height={1000} layout="responsive" />
+            </Box>
+            <HStack spacing={4} mt={4} mb={8}>
+              <Avatar size="sm" name={post.author.name} src={post.author.picture.url} />
+              <Text fontSize="xl">
+                {post.author.name} &bull; {parseDate(post.date)}
+              </Text>
+            </HStack>
+            <ReactMarkdown
+              renderers={renderers(textColor, shadow)}
+              plugins={[[gfm, { singleTilde: false }]]}
+            >
+              {post.content}
+            </ReactMarkdown>
+          </>
+        )}
       </Container>
     </MotionFlex>
   );
@@ -70,7 +87,7 @@ export const getStaticProps: GetStaticProps = async ({ params, preview = false }
   const { data } = await getMarkdownData(params.slug as string, preview);
   return {
     props: {
-      post: data.markdownPostCollection.items[0] || null,
+      post: data?.markdownPostCollection?.items[0] || null,
       preview,
     },
   };
@@ -80,7 +97,7 @@ export async function getStaticPaths() {
   let { data }: { data: IGetPostSlug } = await getMarkdownPostSlug();
   return {
     paths:
-      data.markdownPostCollection.items.map(({ slug }: { slug: string }) => ({
+      data?.markdownPostCollection?.items.map(({ slug }: { slug: string }) => ({
         params: { slug },
       })) ?? [],
     fallback: true,
