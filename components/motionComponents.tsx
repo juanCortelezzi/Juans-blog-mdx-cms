@@ -1,10 +1,10 @@
 import { Box, Flex, SimpleGrid, LinkBox } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
-export const MotionBox = motion.custom(Box);
+export const MotionBox = motion(Box);
 
-export const MotionFlex = motion.custom(Flex);
+export const MotionFlex = motion(Flex);
 
-export const MotionSG = motion.custom(SimpleGrid);
+export const MotionSG = motion(SimpleGrid);
 
-export const MotionLinkBox = motion.custom(LinkBox);
+export const MotionLinkBox = motion(LinkBox);
