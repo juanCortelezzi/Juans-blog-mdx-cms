@@ -70,7 +70,7 @@ export default function Blog({ postData }) {
           <InputGroup size="md">
             <Input
               type="text"
-              placeholder="search a project"
+              placeholder="Search a post"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />

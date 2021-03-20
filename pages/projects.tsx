@@ -67,7 +67,7 @@ export default function Projects({ data }) {
           <InputGroup size="md">
             <Input
               type="text"
-              placeholder="search a project"
+              placeholder="Search a project"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
