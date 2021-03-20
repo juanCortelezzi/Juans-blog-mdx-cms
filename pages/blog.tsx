@@ -22,9 +22,7 @@ const container = {
   animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
-export default function Blog({ postData }) {
-  const posts = postData.data.markdownPostCollection.items;
-
+export default function Blog({ posts }) {
   const [search, setSearch] = useState("");
   const options = { keys: ["title", "date"] };
   const fuse = new Fuse(posts, options);
@@ -94,11 +92,12 @@ export default function Blog({ postData }) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const postData = await getMarkdownHomeData();
+  const { data } = await getMarkdownHomeData();
+  const posts = data.markdownPostCollection.items ?? [];
 
   return {
     props: {
-      postData,
+      posts,
     },
     revalidate: 60,
   };

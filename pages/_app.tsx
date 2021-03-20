@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import theme from "../theme";
 
-function MyApp({ Component, pageProps, router }: AppProps) {
+export default function MyApp({ Component, pageProps, router }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <CSSReset />
@@ -13,5 +13,3 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     </ChakraProvider>
   );
 }
-
-export default MyApp;

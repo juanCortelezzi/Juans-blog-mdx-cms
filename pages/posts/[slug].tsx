@@ -66,24 +66,23 @@ export default function Post({ preview, post }: IProps) {
   );
 }
 
+export const getStaticProps: GetStaticProps = async ({ params, preview = false }) => {
+  const { data } = await getMarkdownData(params.slug as string, preview);
+  return {
+    props: {
+      post: data.markdownPostCollection.items[0] || null,
+      preview,
+    },
+  };
+};
+
 export async function getStaticPaths() {
   let { data }: { data: IGetPostSlug } = await getMarkdownPostSlug();
   return {
     paths:
-      data?.markdownPostCollection.items.map(({ slug }: { slug: string }) => ({
+      data.markdownPostCollection.items.map(({ slug }: { slug: string }) => ({
         params: { slug },
       })) ?? [],
     fallback: true,
   };
 }
-
-export const getStaticProps: GetStaticProps = async ({ params, preview = false }) => {
-  const { data } = await getMarkdownData(params.slug as string, preview);
-  return {
-    props: {
-      post: data?.markdownPostCollection?.items[0] || null,
-      preview,
-    },
-    revalidate: 60,
-  };
-};
