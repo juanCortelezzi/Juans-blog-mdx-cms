@@ -93,7 +93,7 @@ export default function Blog({ posts }) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const { data } = await getMarkdownHomeData();
-  const posts = data.markdownPostCollection.items ?? [];
+  const posts = data?.markdownPostCollection?.items ?? [];
 
   return {
     props: {
