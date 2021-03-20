@@ -1,7 +1,5 @@
 import Head from "next/head";
 import { GetStaticProps } from "next";
-import { useQuery } from "@apollo/client";
-import { initializeApollo } from "@/lib/apolloClient";
 import { getMarkdownHomeData, IPost } from "@/lib/apolloQuerys";
 import { Center, SimpleGrid } from "@chakra-ui/react";
 import { PostCard } from "@/components/postCard";
@@ -24,9 +22,8 @@ const container = {
   animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
-export default function Blog() {
-  const { data } = useQuery(getMarkdownHomeData);
-  const posts = data.markdownPostCollection.items;
+export default function Blog({ postData }) {
+  const posts = postData.data.markdownPostCollection.items;
 
   const [search, setSearch] = useState("");
   const options = { keys: ["title", "date"] };
@@ -36,6 +33,7 @@ export default function Blog() {
   if (dataResults.length < 1) {
     dataResults = posts;
   }
+
   return (
     <MotionFlex
       as="main"
@@ -63,7 +61,6 @@ export default function Blog() {
         style={{ width: "100%" }}
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(dataResults);
         }}
       >
         <FormControl id="projectSearch">
@@ -97,14 +94,11 @@ export default function Blog() {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = initializeApollo();
-  await client.query({
-    query: getMarkdownHomeData,
-  });
+  const postData = await getMarkdownHomeData();
 
   return {
     props: {
-      initialApolloState: client.cache.extract(),
+      postData,
     },
     revalidate: 60,
   };

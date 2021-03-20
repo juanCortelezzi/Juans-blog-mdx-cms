@@ -1,24 +1,13 @@
+import { getMarkdownPreviewSlug } from "@/lib/apolloQuerys";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { secret, slug } = req.query;
-  if (secret !== process.env.CONTENTFUL_PREVIEW_SECRET || !slug) {
+  if (secret !== process.env.CONTENTFUL_PREVIEW_TOKEN || !slug) {
     return res.status(401).json({ message: "Invalid token" });
   }
 
-  const data = await fetch(
-    `https://graphql.contentful.com/content/v1/spaces/${process.env.SPACEID}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.CONTENTFUL_PREVIEW_SECRET}`,
-      },
-      body: JSON.stringify({
-        query: `query{markdownPostCollection(where:{slug:"${slug}"},preview:true,limit: 1){items{ slug }}}`,
-      }),
-    }
-  ).then((response) => response.json());
+  const data = await getMarkdownPreviewSlug(slug as string);
 
   const post = data.data?.markdownPostCollection?.items[0];
 

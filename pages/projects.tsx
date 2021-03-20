@@ -58,7 +58,6 @@ export default function Projects({ data }) {
         style={{ width: "100%" }}
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(dataResults);
         }}
       >
         <FormControl id="projectSearch">

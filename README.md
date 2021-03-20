@@ -2,9 +2,9 @@
 a blog created with nextjs typescript apollo gql and contentful cms
 
 ## TODO
-- [ ] remove graphql for regular fetch api
 
 ## DONE
+- [✓] remove apollo for regular fetch api
 - [✓] add fuzzy (FUZE) finder on blogs and projects
 - [✓] fix barely readable text on light mode
 - [✓] make Projects page to work with ISR instead of SSG
