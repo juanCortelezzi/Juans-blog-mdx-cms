@@ -95,7 +95,7 @@ export default function Projects({ data }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const data = await fetch("https://api.github.com/users/juancortelezzi/repos").then((r) =>
     r.json()
   );
@@ -104,6 +104,5 @@ export async function getStaticProps() {
     props: {
       data: await data,
     },
-    revalidate: 120,
   };
 }

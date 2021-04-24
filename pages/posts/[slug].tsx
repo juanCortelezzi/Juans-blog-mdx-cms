@@ -90,6 +90,7 @@ export const getStaticProps: GetStaticProps = async ({ params, preview = false }
       post: data?.markdownPostCollection?.items[0] || null,
       preview,
     },
+    revalidate: 60,
   };
 };
 

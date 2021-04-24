@@ -8,7 +8,7 @@ const container = {
   animate: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const textColor = useColorModeValue("gray.800", "gray.300");
   return (
     <MotionBox
@@ -38,3 +38,7 @@ export default function Home() {
     </MotionBox>
   );
 }
+function fasdfa(fasdfa: any) {
+    throw new Error("Function not implemented.");
+}
+
